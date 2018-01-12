@@ -47,9 +47,9 @@ const getSuggestions = value => {
 const getSuggestionValue = suggestion => suggestion.name;
 
 const renderSuggestion = suggestion => (
-    <div>
-      {suggestion.name}
-    </div>
+    <p className="suggestion">
+        {suggestion.name}
+    </p>
 );
 
 class Main extends Component {
@@ -101,6 +101,13 @@ class Main extends Component {
                         renderSuggestion={renderSuggestion}
                         inputProps={inputProps}
                     />
+
+                    {/* <div id="suggestions">
+                        <p className="suggestion">A suggestion</p>
+                        <p className="suggestion">A suggestion</p>
+                        <p className="suggestion">A suggestion</p>
+                        <p className="suggestion">A suggestion</p>
+                    </div> */}
 
                     <div id="menu-icon-div">
                         <ul id="menu-icon-list">
