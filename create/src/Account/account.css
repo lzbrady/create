@@ -1,0 +1,93 @@
+#wrapper {}
+
+.info-div {
+    background-color: lightblue;
+    float: left;
+}
+
+
+/* Profile Info */
+
+#profile-info-div {
+    width: 30%;
+    overflow: hidden;
+}
+
+.profile-info {
+    text-align: center;
+    font-size: 1.3rem
+}
+
+#profile-name {
+    font-size: 2rem;
+}
+
+#profile-picture {
+    background-color: black;
+    width: 90%;
+    border-radius: 15px;
+    margin: auto;
+    display: block;
+    margin-top: 5%;
+}
+
+#skill-list {
+    list-style: none;
+    padding: 0px;
+    background-color: lightgray;
+    margin: 5px;
+}
+
+#profile-skills-heading {
+}
+
+.skill {
+    display: inline-block;
+    margin: 3px 5px;
+    background: gray;
+}
+
+.account-heading {
+    margin: 0px;
+    text-align: left;
+    margin-left: 15px;
+    font-weight: bold;
+}
+
+
+/* Content Info */
+
+#content-info-div {
+    width: 67%;
+    overflow: hidden;
+    float: right;
+}
+
+#content-heading {
+    font-size: 2rem;
+}
+
+.creation {
+    background-color: lightcoral;
+    width: 94%;
+    margin: auto;
+    padding: 0px 10px;
+    margin-bottom: 10px;
+}
+
+.creation-icon {
+    display: inline-block;
+    float: left;
+}
+
+.creation-info {
+    width: calc(100% - 140px);
+    display: inline-block;
+    max-height: 120px;
+    margin-left: 10px;
+    overflow: hidden;
+}
+
+.creation-name {
+    font-size: 24px;
+}
