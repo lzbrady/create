@@ -2,6 +2,10 @@
     font-size: 3rem;
 }
 
+#company-name-link {
+    display: table;
+}
+
 
 /* Search Bar and Suggestion */
 
@@ -60,6 +64,16 @@
 
 /* Menu */
 
+#hidden-menu {
+    position: absolute;
+    top: 20px;
+    right: 10px;
+    background-color: #eee;
+    width: 300px;
+    height: 450px;
+    z-index: 5;
+}
+
 #menu-icon-div {
     position: absolute;
     top: 10px;
@@ -74,4 +88,42 @@
 
 .menu-icon {
     font-size: 2.5rem;
+    cursor: pointer;
+}
+
+.account-icon {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 10;
+}
+
+ul .menu-account-icon {
+    right: 240px;
+}
+
+#hidden-menu-name {
+    position: absolute;
+    left: 60px;
+    font-size: 20px;
+    top: 27px;
+    margin: 0px;
+}
+
+#hidden-menu-item-list {
+    list-style: none;
+    position: absolute;
+    top: 50px;
+    width: 250px;
+    padding: 0px;
+    text-align: center;
+    margin-left: 25px;
+}
+
+.hidden-menu-item {
+    background-color: grey;
+    line-height: 29px;
+    height: 30px;
+    font-size: 20px;
+    margin-bottom: 10px;
 }
