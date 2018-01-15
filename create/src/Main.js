@@ -56,7 +56,7 @@ class Main extends Component {
         this.state = {
             value: '',
             suggestions: [],
-            renderMenu: false
+            renderMenu: false,
         };
         this.handleToggleClick = this
             .handleToggleClick
@@ -88,10 +88,6 @@ class Main extends Component {
             .child('user1id');
         userRef.on('value', (snapshot) => {
             let userInfo = snapshot.val();
-            let newSkills = [];
-            for (let skill in userInfo.skills) {
-                newSkills.push(skill);
-            }
             this.setState({name: userInfo.name});
         });
     }
@@ -140,7 +136,6 @@ class Main extends Component {
                                 ? ''
                                 : ' menu-account-icon'}`}
                                 onClick={this.handleToggleClick}>
-                                {/* <NavLink to="/account"><MdAccountCircle/></NavLink> */}
                                 <MdAccountCircle/>
                             </li>
                         </ul>
