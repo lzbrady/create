@@ -4,6 +4,7 @@ import fire from '../fire';
 import MdFileUpload from 'react-icons/lib/md/file-upload';
 import MdCheckCircle from 'react-icons/lib/md/check-circle';
 import FaSpinner from 'react-icons/lib/fa/spinner';
+import DefaultThumbnail from '../images/default-thumbnail.svg';
 
 import './upload.css'
 
@@ -13,26 +14,15 @@ class Upload extends Component {
         super();
 
         this.state = {
-            fileName: "",
-            isUploading: false,
-            progress: 0
+            thumbnail: DefaultThumbnail,
+            title: "",
+            description: "",
+            tags: []
         }
+        this.handleInputChange = this
+            .handleInputChange
+            .bind(this);
     }
-    handleUploadStart = () => this.setState({isUploading: true, progress: 0});
-    handleProgress = (progress) => this.setState({progress});
-    handleUploadError = (error) => {
-        this.setState({isUploading: false});
-        console.error(error);
-    }
-    handleUploadSuccess = (filename) => {
-        this.setState({avatar: filename, progress: 100, isUploading: false});
-        fire
-            .storage()
-            .ref()
-            .child(filename)
-            .getDownloadURL()
-            .then(url => this.setState({avatarURL: url}));
-    };
 
     handleClick() {
         console.log("Test");
@@ -44,6 +34,7 @@ class Upload extends Component {
     handleChange(selectorFiles : FileList)
     {
         const fileName = selectorFiles.name
+        // var filePath = currentUser.uid + '/' + data.key + '/' + file.name;
         const storageRef = fire
             .storage()
             .ref();
@@ -52,7 +43,7 @@ class Upload extends Component {
             .put(selectorFiles);
 
         uploadTask.on('state_changed', snapshot => {
-            var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            let progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
             document
                 .getElementById('xxl-upload')
                 .style
@@ -61,7 +52,6 @@ class Upload extends Component {
                 .getElementById('xxl-uploading')
                 .style
                 .display = "initial";
-            console.log("Progress: ", progress);
         }, error => {
             document
                 .getElementById('xxl-upload')
@@ -85,15 +75,39 @@ class Upload extends Component {
                 .getElementById('xxl-uploaded')
                 .style
                 .display = "initial";
-
-            console.log("Done");
+            console.log(uploadTask.snapshot);
+            // let creationsRef = fire     .database()     .ref('creations')     .push({ });
+            // userRef.push({name: currentUser.displayName}) let userRef = fire .database()
+            // .ref('users')     .child('user1'); userRef.push({name:
+            // currentUser.displayName});
         });
+    }
+
+    handleInputChange(event) {
+        const target = event.target;
+        const value = target.type === 'checkbox'
+            ? target.checked
+            : target.value;
+        const name = target.name;
+
+        this.setState({[name]: value});
+    }
+
+    handleSubmit(event) {
+        alert('A name was submitted: ' + this.state.value);
+        event.preventDefault();
     }
 
     render() {
         return (
             <div id="wrapper">
                 <div id="upload-container">
+                    <div id="thumbnail-container">
+                        <img
+                            id="thumbnail-image"
+                            src={this.state.thumbnail}
+                            alt="Click to upload a thumbnail"/>
+                    </div>
                     <MdFileUpload
                         onClick={this.handleClick}
                         className="xxl-icon"
@@ -114,6 +128,27 @@ class Upload extends Component {
                     id="media-capture"
                     type="file"
                     onChange={(e) => this.handleChange(e.target.files[0])}/>
+
+                <form onSubmit={this.handleSubmit}>
+                    <label>
+                        Title:
+                        <input
+                            name="title"
+                            type="text"
+                            checked={this.state.isGoing}
+                            onChange={this.handleInputChange}/>
+                    </label>
+                    <br/>
+                    <label>
+                        Description:
+                        <input
+                            name="description"
+                            type="text"
+                            value={this.state.numberOfGuests}
+                            onChange={this.handleInputChange}/>
+                    </label>
+                    <button type="submit">Submit</button>
+                </form>
             </div>
         )
     }
