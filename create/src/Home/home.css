@@ -1,0 +1,40 @@
+/* Content Info */
+
+#creations-div {
+    width: 98%;
+    overflow: hidden;
+    background-color: lightblue;
+    margin: auto;
+}
+
+#content-heading {
+    font-size: 2rem;
+    padding: 6px 10px;
+}
+
+.creation {
+    background-color: lightcoral;
+    width: 94%;
+    margin: auto;
+    padding: 0px 10px;
+    margin-bottom: 10px;
+    height: 125px;
+}
+
+.creation-icon {
+    display: inline-block;
+    float: left;
+}
+
+.creation-info {
+    width: calc(100% - 140px);
+    display: inline-block;
+    max-height: 120px;
+    margin-left: 10px;
+    overflow: hidden;
+}
+
+.creation-name {
+    font-size: 24px;
+    margin: 15px 0px;
+}

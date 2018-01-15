@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import fire from '../fire';
 import MdMusicVideo from 'react-icons/lib/md/music-video';
-
+import './home.css'
 
 class Home extends Component {
   constructor() {
@@ -18,9 +18,7 @@ class Home extends Component {
       .ref('creations');
     let newCreations = [];
     creationsRef.on('value', (snapshot) => {
-      let creations = snapshot.val();
       snapshot.forEach(function (child) {
-        console.log(child.val());
         let creationToAdd = child.val();
         creationToAdd.key = child.key;
         newCreations.push(creationToAdd);
@@ -31,7 +29,7 @@ class Home extends Component {
 
   render() {
     return (
-      <div id="content-info-div" className="info-div">
+      <div id="creations-div">
         <p className="account-heading" id="content-heading">Creations:</p>
         {this
           .state

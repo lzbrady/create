@@ -3,10 +3,15 @@ import {Route, NavLink, HashRouter} from "react-router-dom";
 
 import Home from "./Home/Home";
 import Account from "./Account/Account";
+import Upload from "./Upload/Upload";
+import './main.css';
 
 import Autosuggest from 'react-autosuggest';
+import ReactTooltip from 'react-tooltip'
+
 import MdAccountCircle from 'react-icons/lib/md/account-circle';
-import './main.css';
+import MdFileUpload from 'react-icons/lib/md/file-upload';
+
 import fire from './fire';
 
 // Imagine you have a list of languages that you'd like to autosuggest.
@@ -56,7 +61,7 @@ class Main extends Component {
         this.state = {
             value: '',
             suggestions: [],
-            renderMenu: false,
+            renderMenu: false
         };
         this.handleToggleClick = this
             .handleToggleClick
@@ -67,6 +72,17 @@ class Main extends Component {
         this.setState(prevState => ({
             renderMenu: !prevState.renderMenu
         }));
+    }
+
+    handleClick(menuItemClicked) {
+        switch (menuItemClicked) {
+            case "home":
+                console.log("Home");
+                break;
+            default:
+                console.log("Default");
+        }
+
     }
 
     onChange = (event, {newValue}) => {
@@ -111,6 +127,9 @@ class Main extends Component {
                     <NavLink to="/account">
                         <li className="hidden-menu-item">Account</li>
                     </NavLink>
+                    <NavLink to="/upload">
+                        <li className="hidden-menu-item">Upload</li>
+                    </NavLink>
                 </ul>
             </div>;
         }
@@ -131,13 +150,22 @@ class Main extends Component {
 
                     <div id="menu-icon-div">
                         <ul id="menu-icon-list">
+                            <NavLink to="/upload">
+                                <li data-tip="Upload" className='menu-icon'>
+                                    <MdFileUpload/>
+                                </li>
+                            </NavLink>
                             <li
-                                className={`account-icon menu-icon${ (menu == null)
+                                data-tip="Account"
+                                className={`menu-icon${ (menu == null)
                                 ? ''
                                 : ' menu-account-icon'}`}
-                                onClick={this.handleToggleClick}>
+                                onClick={() => {
+                                this.handleToggleClick()
+                            }}>
                                 <MdAccountCircle/>
                             </li>
+                            <ReactTooltip place="bottom" type="info" delayShow={200} effect="solid"/>
                         </ul>
                     </div>
 
@@ -146,6 +174,7 @@ class Main extends Component {
                     <div className="content">
                         <Route exact path="/" component={Home}/>
                         <Route exact path="/account" component={Account}/>
+                        <Route exact path="/upload" component={Upload}/>
                     </div>
                 </div>
             </HashRouter>

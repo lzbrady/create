@@ -77,7 +77,7 @@
 #menu-icon-div {
     position: absolute;
     top: 10px;
-    right: 20px;
+    right: 15px;
 }
 
 #menu-icon-list {
@@ -89,17 +89,15 @@
 .menu-icon {
     font-size: 2.5rem;
     cursor: pointer;
-}
-
-.account-icon {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    z-index: 10;
+    display: inline-block;
+    margin-right: 5px;
 }
 
 ul .menu-account-icon {
     right: 240px;
+    position: absolute;
+    top: 10px;
+    z-index: 10;
 }
 
 #hidden-menu-name {
@@ -126,45 +124,4 @@ ul .menu-account-icon {
     height: 30px;
     font-size: 20px;
     margin-bottom: 10px;
-}
-
-
-/* Content Info */
-
-#content-info-div {
-    width: 67%;
-    overflow: hidden;
-    float: right;
-}
-
-#content-heading {
-    font-size: 2rem;
-    padding: 6px 10px;
-}
-
-.creation {
-    background-color: lightcoral;
-    width: 94%;
-    margin: auto;
-    padding: 0px 10px;
-    margin-bottom: 10px;
-    height: 125px;
-}
-
-.creation-icon {
-    display: inline-block;
-    float: left;
-}
-
-.creation-info {
-    width: calc(100% - 140px);
-    display: inline-block;
-    max-height: 120px;
-    margin-left: 10px;
-    overflow: hidden;
-}
-
-.creation-name {
-    font-size: 24px;
-    margin: 15px 0px;
 }
