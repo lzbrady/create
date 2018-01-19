@@ -40,7 +40,7 @@ class Home extends Component {
                 <MdMusicVideo size={125}/>
               </div>
               <div className="creation-info">
-                <p className="creation-name">{creation.name}</p>
+                <p className="creation-title">{creation.title}</p>
                 <p>{creation.description}</p>
               </div>
             </div>;

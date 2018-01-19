@@ -4,29 +4,19 @@ import fire from '../fire';
 import MdFileUpload from 'react-icons/lib/md/file-upload';
 import MdCheckCircle from 'react-icons/lib/md/check-circle';
 import FaSpinner from 'react-icons/lib/fa/spinner';
-import DefaultThumbnail from '../images/default-thumbnail-image.svg';
 
 import './upload.css'
 
-class Upload extends Component {
+class UploadFile extends Component {
 
     constructor() {
         super();
 
         this.state = {
-            thumbnailUrl: DefaultThumbnail, //TODO
             title: "",
             description: "",
-            tags: [], //TODO
-            contentType: "",
-            storageUrl: ""
+            tags: []
         }
-        this.handleInputChange = this
-            .handleInputChange
-            .bind(this);
-        this.handleSubmit = this
-            .handleSubmit
-            .bind(this);
     }
 
     handleClick() {
@@ -38,6 +28,7 @@ class Upload extends Component {
     handleChange(selectorFiles : FileList)
     {
         const fileName = selectorFiles.name
+        // var filePath = currentUser.uid + '/' + data.key + '/' + file.name;
         const storageRef = fire
             .storage()
             .ref();
@@ -45,9 +36,8 @@ class Upload extends Component {
             .child(fileName)
             .put(selectorFiles);
 
-        // Upload to Firebase Storage, most of this code is changing image displays
         uploadTask.on('state_changed', snapshot => {
-            var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            let progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
             document
                 .getElementById('xxl-upload')
                 .style
@@ -56,7 +46,6 @@ class Upload extends Component {
                 .getElementById('xxl-uploading')
                 .style
                 .display = "initial";
-            console.log("Progress: ", progress);
         }, error => {
             document
                 .getElementById('xxl-upload')
@@ -80,47 +69,13 @@ class Upload extends Component {
                 .getElementById('xxl-uploaded')
                 .style
                 .display = "initial";
-
-            console.log("Done");
-
-            let fullPath = uploadTask.snapshot.metadata.fullPath;
-            console.log(fire.storage().ref(fullPath).toString());
-            this.setState({
-                contentType: uploadTask.snapshot.metadata.contentType,
-                storageUrl: fire
-                    .storage()
-                    .ref(fullPath)
-                    .toString()
-            });
+            console.log(uploadTask.snapshot);
+            return "test";
+            // let creationsRef = fire     .database()     .ref('creations')     .push({ });
+            // userRef.push({name: currentUser.displayName}) let userRef = fire .database()
+            // .ref('users')     .child('user1'); userRef.push({name:
+            // currentUser.displayName});
         });
-    }
-
-    handleSubmit(event) {
-        let newCreationRef = fire
-            .database()
-            .ref('creations')
-            .push();
-
-        newCreationRef.set(this.state);
-
-        let userCreationsRef = fire
-            .database()
-            .ref('users')
-            .child('user1id')
-            .child('creations');
-
-        userCreationsRef.set({newCreationRef: true});
-        newCreationRef.set({owner: "user1id"});
-    }
-
-    handleInputChange(event, doubleCheck) {
-        const target = event.target;
-        const value = target.type === 'checkbox'
-            ? target.checked
-            : target.value;
-        const name = target.name;
-
-        this.setState({[name]: value});
     }
 
     render() {
@@ -147,31 +102,9 @@ class Upload extends Component {
                     id="media-capture"
                     type="file"
                     onChange={(e) => this.handleChange(e.target.files[0])}/>
-
-                <label>
-                    Title:
-                    <input
-                        name="title"
-                        type="text"
-                        checked={this.state.isGoing}
-                        onChange={this.handleInputChange}/>
-                </label>
-                <br/>
-                <label>
-                    Description:
-                    <input
-                        name="description"
-                        type="text"
-                        value={this.state.numberOfGuests}
-                        onChange={this.handleInputChange}/>
-                </label>
-                <button
-                    disabled={!this.state.title || !this.state.storageUrl || !this.state.contentType}
-                    id="submit-button"
-                    onClick={this.handleSubmit}>Submit</button>
             </div>
         )
     }
 }
 
-export default Upload;
+export default UploadFile;
