@@ -7,7 +7,7 @@
 }
 
 .xxl-icon {
-    margin-top: calc(25vh - 166.66px);
+    margin-top: calc(25vh - 100px);
 }
 
 #xxl-uploading {
@@ -26,17 +26,4 @@
 
 #media-capture {
     display: none;
-}
-
-#thumbnail-image {
-    width: 100px;
-    height: 66.66px;
-}
-
-#thumbnail-image:hover {
-    cursor: pointer;
-}
-
-#thumbnail-container {
-    text-align: left;
 }
