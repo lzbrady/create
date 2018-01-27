@@ -1,4 +1,8 @@
 import React, {Component} from "react";
+import {Route, NavLink, HashRouter} from "react-router-dom";
+
+import Detail from "../Detail/Detail";
+
 import fire from '../fire';
 import MdMusicVideo from 'react-icons/lib/md/music-video';
 import './home.css'
@@ -18,13 +22,18 @@ class Home extends Component {
       .ref('creations');
     let newCreations = [];
     creationsRef.on('value', (snapshot) => {
-      snapshot.forEach(function (child) {
-        let creationToAdd = child.val();
-        creationToAdd.key = child.key;
-        newCreations.push(creationToAdd);
-      });
+      snapshot
+        .forEach(function (child) {
+          let creationToAdd = child.val();
+          creationToAdd.key = child.key;
+          newCreations.push(creationToAdd);
+        });
       this.setState({creations: newCreations});
     });
+  }
+
+  handleClick(element) {
+    console.log(element);
   }
 
   render() {
@@ -35,7 +44,7 @@ class Home extends Component {
           .state
           .creations
           .map((creation) => {
-            return <div className="creation" key={creation.key}>
+            return <div className="creation" onClick={() => {<Detail />}} key={creation.key}>
               <div className="creation-icon">
                 <MdMusicVideo size={125}/>
               </div>

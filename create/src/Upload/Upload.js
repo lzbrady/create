@@ -101,6 +101,7 @@ class Upload extends Component {
             .ref('creations')
             .push();
 
+        console.log(this.state);
         newCreationRef.set(this.state);
 
         let userCreationsRef = fire
@@ -109,8 +110,10 @@ class Upload extends Component {
             .child('user1id')
             .child('creations');
 
-        userCreationsRef.set({newCreationRef: true});
-        newCreationRef.set({owner: "user1id"});
+        userCreationsRef.update({
+            [newCreationRef.key]: true
+        });
+        newCreationRef.update({owner: "user1id"});
     }
 
     handleInputChange(event, doubleCheck) {
