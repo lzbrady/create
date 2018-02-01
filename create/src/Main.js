@@ -4,15 +4,15 @@ import {Route, NavLink, HashRouter} from "react-router-dom";
 import Home from "./Home/Home";
 import Account from "./Account/Account";
 import Upload from "./Upload/Upload";
+import Detail from "./Detail/Detail";
 import './main.css';
+import {getUsername} from './Backend/database';
 
 import Autosuggest from 'react-autosuggest';
 import ReactTooltip from 'react-tooltip'
 
 import MdAccountCircle from 'react-icons/lib/md/account-circle';
 import MdFileUpload from 'react-icons/lib/md/file-upload';
-
-import fire from './fire';
 
 // Imagine you have a list of languages that you'd like to autosuggest.
 const languages = [
@@ -98,13 +98,8 @@ class Main extends Component {
     };
 
     componentWillMount() {
-        let userRef = fire
-            .database()
-            .ref('users')
-            .child('user1id');
-        userRef.on('value', (snapshot) => {
-            let userInfo = snapshot.val();
-            this.setState({name: userInfo.name});
+        getUsername().then((username) =>{
+            this.setState({name: username});
         });
     }
 
@@ -175,6 +170,7 @@ class Main extends Component {
                         <Route exact path="/" component={Home}/>
                         <Route exact path="/account" component={Account}/>
                         <Route exact path="/upload" component={Upload}/>
+                        <Route path='/view/:String' component={Detail}/>
                     </div>
                 </div>
             </HashRouter>

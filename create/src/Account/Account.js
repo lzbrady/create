@@ -15,6 +15,7 @@ class Account extends Component {
         };
     }
 
+    // Only method that uses Firebase. Kept in front end for real time updates, but has unused method in backend.
     componentWillMount() {
         let userRef = fire
             .database()

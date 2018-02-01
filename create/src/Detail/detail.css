@@ -1,0 +1,81 @@
+#css-wrapper {
+    background-color: red;
+    display: inline-block;
+    width: 98%;
+    text-align: center;
+}
+
+
+/* Left Content*/
+
+#css-left {
+    background-color: orange;
+    width: 100%;
+    max-width: 600px;
+    margin: auto;
+    display: inline-block;
+    margin: 10px;
+}
+
+#css-media-wrapper {
+    background-color: blue;
+    width: 100%;
+    height: auto;
+    min-height: 337.5px;
+}
+
+#css-description {
+    background-color: lightblue;
+}
+
+#css-comment-wrapper {
+    background-color: green;
+}
+
+#css-comment-list {
+    background-color: lightgreen;
+}
+
+.css-comment {
+    background-color: purple;
+}
+
+
+/* Right Content*/
+
+#css-right {
+    background-color: lightpink;
+    width: 100%;
+    max-width: 350px;
+    min-width: 200px;
+    display: inline-block;
+    margin: 10px;
+    vertical-align: top;
+}
+
+#css-tag-wrapper {
+    background-color: pink;
+}
+
+#css-tag-list {
+    background-color: lightcoral;
+}
+
+.css-tag {
+    display: inline-block;
+    margin: 5px;
+    background: gray;
+    padding: 0px 5px;
+}
+
+#css-suggested-wrapper {
+    background-color: palegreen;
+}
+
+#css-suggested-list {
+    background-color: aqua;
+}
+
+.css-suggestion {
+    background-color: rgb(20, 133, 116);
+}

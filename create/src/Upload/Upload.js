@@ -5,6 +5,7 @@ import MdFileUpload from 'react-icons/lib/md/file-upload';
 import MdCheckCircle from 'react-icons/lib/md/check-circle';
 import FaSpinner from 'react-icons/lib/fa/spinner';
 import DefaultThumbnail from '../images/default-thumbnail-image.svg';
+import {uploadMediaToDatabase} from '../Backend/database';
 
 import './upload.css'
 
@@ -35,6 +36,7 @@ class Upload extends Component {
             .click();
     }
 
+    // Talks to Firebase Storage
     handleChange(selectorFiles : FileList)
     {
         const fileName = selectorFiles.name
@@ -96,24 +98,7 @@ class Upload extends Component {
     }
 
     handleSubmit(event) {
-        let newCreationRef = fire
-            .database()
-            .ref('creations')
-            .push();
-
-        console.log(this.state);
-        newCreationRef.set(this.state);
-
-        let userCreationsRef = fire
-            .database()
-            .ref('users')
-            .child('user1id')
-            .child('creations');
-
-        userCreationsRef.update({
-            [newCreationRef.key]: true
-        });
-        newCreationRef.update({owner: "user1id"});
+        uploadMediaToDatabase(this.state);
     }
 
     handleInputChange(event, doubleCheck) {
