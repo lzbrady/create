@@ -63,6 +63,8 @@ export function getCreationDetail(fbk) {
     let rtn = {};
     let promise = p.then((snapshot) => {
         rtn = snapshot.val();
+
+        // Comments
         let rtnComments = rtn.comments;
         let comments = [];
         if (rtn.comments) {
@@ -73,8 +75,55 @@ export function getCreationDetail(fbk) {
             }
             rtn.comments = comments;
         }
+
+        // Tags
+        let rtnTags = rtn.tags;
+        let tags = [];
+        if (rtn.tags) {
+            for (let key in rtnTags) {
+                if (rtnTags.hasOwnProperty(key)) {
+                    tags.push(key);
+                }
+            }
+            rtn.tags = tags;
+        }
+
         return rtn;
     });
+    return promise;
+}
+
+export function loadMedia(storageUrl) {
+    let mediaRef = fire
+        .storage()
+        .refFromURL(storageUrl);
+
+    // Get the download URL
+    let promise = mediaRef
+        .getDownloadURL()
+        .then(function (url) {
+            return url;
+        })
+        .catch(function (error) {
+            // A full list of error codes is available at
+            // https://firebase.google.com/docs/storage/web/handle-errors
+            let e = "";
+            switch (error.code) {
+                case 'storage/object_not_found':
+                    e = "Error: Unavailable, the owner may have removed the content";
+                    break;
+                case 'storage/unauthorized':
+                    e = "Error: Unauthorized to view content";
+                    break;
+                case 'storage/canceled':
+                    e = "Error: Please refresh";
+                    break;
+                default:
+                    e = "Error: Content unavailable at this time";
+                    break;
+            }
+            return e;
+        });
     return promise;
 }
 

@@ -113,7 +113,31 @@ class Upload extends Component {
 
     render() {
         return (
-            <div id="wrapper">
+            <div id="upload-wrapper">
+                <div id="input-container">
+                    <p className="label">Title:</p>
+                    <input
+                        name="title"
+                        type="text"
+                        className="input"
+                        id="input-title"
+                        checked={this.state.isGoing}
+                        onChange={this.handleInputChange}/>
+                    <p className="label">Description:</p>
+                    <textarea
+                        name="description"
+                        type="text"
+                        className="input"
+                        id="input-description"
+                        value={this.state.numberOfGuests}
+                        onChange={this.handleInputChange}/>
+                    <button
+                        disabled={!this.state.title || !this.state.storageUrl || !this.state.contentType}
+                        className={(!this.state.title || !this.state.storageUrl || !this.state.contentType) ? "disabled": "enabled"}
+                        id="submit-button"
+                        onClick={this.handleSubmit}>Submit</button>
+                </div>
+
                 <div id="upload-container">
                     <MdFileUpload
                         onClick={this.handleClick}
@@ -135,28 +159,6 @@ class Upload extends Component {
                     id="media-capture"
                     type="file"
                     onChange={(e) => this.handleChange(e.target.files[0])}/>
-
-                <label>
-                    Title:
-                    <input
-                        name="title"
-                        type="text"
-                        checked={this.state.isGoing}
-                        onChange={this.handleInputChange}/>
-                </label>
-                <br/>
-                <label>
-                    Description:
-                    <input
-                        name="description"
-                        type="text"
-                        value={this.state.numberOfGuests}
-                        onChange={this.handleInputChange}/>
-                </label>
-                <button
-                    disabled={!this.state.title || !this.state.storageUrl || !this.state.contentType}
-                    id="submit-button"
-                    onClick={this.handleSubmit}>Submit</button>
             </div>
         )
     }

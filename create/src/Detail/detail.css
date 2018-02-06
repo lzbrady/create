@@ -1,4 +1,4 @@
-#css-wrapper {
+#detail-wrapper {
     background-color: red;
     display: inline-block;
     width: 98%;
@@ -8,8 +8,7 @@
 
 /* Left Content*/
 
-#css-left {
-    background-color: orange;
+#detail-left {
     width: 100%;
     max-width: 600px;
     margin: auto;
@@ -17,34 +16,43 @@
     margin: 10px;
 }
 
-#css-media-wrapper {
-    background-color: blue;
+#detail-media-wrapper {
+    background-color: #310031;
+    border: 5px solid #fafafa;
     width: 100%;
     height: auto;
-    min-height: 337.5px;
+    box-sizing: border-box;
+    color: white;
 }
 
-#css-description {
-    background-color: lightblue;
+#detail-title {
+    background-color: #fafafa;
+    border: 2px solid #fafafa;
+    padding: 2px;
+    font-size: 24px;
+    font-weight: bold;
+    border-top: 1px solid #d1d1d1;
 }
 
-#css-comment-wrapper {
-    background-color: green;
+#detail-description {
+    background-color: #d1d1d1;
+    border: 2px solid #fafafa;
+    padding: 10px;
 }
 
-#css-comment-list {
-    background-color: lightgreen;
-}
+#detail-comment-wrapper {}
 
-.css-comment {
-    background-color: purple;
+.detail-comment {
+    padding: 10px;
+    border-bottom: 1px solid black;
+    width: 90%;
+    margin: auto;
 }
 
 
 /* Right Content*/
 
-#css-right {
-    background-color: lightpink;
+#detail-right {
     width: 100%;
     max-width: 350px;
     min-width: 200px;
@@ -53,29 +61,22 @@
     vertical-align: top;
 }
 
-#css-tag-wrapper {
-    background-color: pink;
-}
+#detail-tag-wrapper {}
 
-#css-tag-list {
-    background-color: lightcoral;
-}
-
-.css-tag {
+.detail-tag {
     display: inline-block;
     margin: 5px;
     background: gray;
     padding: 0px 5px;
 }
 
-#css-suggested-wrapper {
-    background-color: palegreen;
+#detail-suggested-wrapper {}
+
+.detail-list {
+    list-style: none;
+    padding: 0px;
+    background-color: #d1d1d1;
+    border: 2px solid white;
 }
 
-#css-suggested-list {
-    background-color: aqua;
-}
-
-.css-suggestion {
-    background-color: rgb(20, 133, 116);
-}
+.detail-suggestion {}

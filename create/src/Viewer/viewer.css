@@ -1,0 +1,39 @@
+#detail-image {
+    width: 100%;
+    margin: auto;
+    color: white;
+}
+
+#detail-image-wrapper {
+    display: grid;
+    position: relative;
+}
+
+#detail-audio-wrapper {
+    width: 591px;
+    height: 364px;
+    overflow: hidden;
+    position: relative;
+}
+
+#album-art-big {
+    width: 600px;
+    height: 366px;
+    filter: blur(10px);
+}
+
+#album-art-small {
+    width: 150px;
+    max-height: 150px;
+    height: auto;
+    position: absolute;
+    left: 50px;
+    bottom: 78px;
+}
+
+#audio {
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    width: 100%;
+}

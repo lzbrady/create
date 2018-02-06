@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import DefaultThumbnail from '../images/default-thumbnail-image.svg';
 import {getCreationDetail} from '../Backend/database';
+import ViewMedia from '../Viewer/Viewer'
 
 import './detail.css'
 
@@ -14,14 +15,14 @@ class Detail extends Component {
             tags: [], //TODO
             contentType: "",
             storageUrl: "",
-            comments: []
+            comments: [],
+            albumArt: "none"
         }
     }
 
     componentWillMount() {
         let fbk = this.props.match.params.String;
         getCreationDetail(fbk).then((data) => {
-            console.log("Data:", data.comments);
             let tags = data.tags || ["No Tags Yet"];
             let comments = data.comments || ["No Comments Yet"];
             this.setState({
@@ -31,45 +32,53 @@ class Detail extends Component {
                 tags: tags,
                 comments: comments,
                 contentType: data.contentType,
-                storageUrl: data.storageUrl
-            })
-        })
+                storageUrl: data.storageUrl,
+                albumArt: data.albumArt
+            });
+        });
     }
 
     render() {
         return (
-            <div id="css-wrapper">
-                <div id="css-left">
-                    <div id="css-media-wrapper">
-                        Image
+            <div id="detail-wrapper">
+                <div id="detail-left">
+                    <div id="detail-media-wrapper">
+                        <ViewMedia state={this.state} storageUrl={this.state.storageUrl}/>
                     </div>
-                    <div id="css-description">
+                    <div id="detail-title">
+                        {this.state.title}
+                    </div>
+                    <div id="detail-description">
                         {this.state.description}
                     </div>
-                    <div id="css-comment-wrapper">
-                        <ul id="css-comment-list">
+                    <div id="detail-comment-wrapper">
+                        <h1 className="detail-heading">Comments</h1>
+                        <ul className="detail-list">
                             {this
                                 .state
                                 .comments
                                 .map((comment, index) => {
-                                    return <li className="css-comment" key={index}>{comment}</li>;
+                                    return <li className="detail-comment" key={index}>{comment}</li>;
                                 })}
                         </ul>
                     </div>
                 </div>
-                <div id="css-right">
-                    <div id="css-tag-wrapper">
-                        <ul id="css-tag-list">
-                            <li className="css-css-tag">Tag 1</li>
-                            <li className="css-css-tag">Tag 2</li>
-                            <li className="css-tag">Tag 3</li>
+                <div id="detail-right">
+                    <div id="detail-tag-wrapper">
+                        <h1 className="detail-heading">Tags</h1>
+                        <ul className="detail-list">
+                            {this
+                                .state
+                                .tags
+                                .map((tag, index) => {
+                                    return <li className="detail-tag" key={index}>{tag}</li>;
+                                })}
                         </ul>
                     </div>
-                    <div id="css-css-suggested-wrapper">
-                        <ul id="css-css-suggested-list">
-                            <li className="css-suggestion">Suggestion 1</li>
-                            <li className="css-suggestion">Suggestion 2</li>
-                            <li className="css-suggestion">Suggestion 3</li>
+                    <div id="detail-suggested-wrapper">
+                        <h1 className="detail-heading">Suggestions</h1>
+                        <ul className="detail-list">
+                            <li className="detail-suggestion">Coming Soon!</li>
                         </ul>
                     </div>
                 </div>
