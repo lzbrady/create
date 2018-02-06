@@ -5,7 +5,8 @@ import MdFileUpload from 'react-icons/lib/md/file-upload';
 import MdCheckCircle from 'react-icons/lib/md/check-circle';
 import FaSpinner from 'react-icons/lib/fa/spinner';
 import DefaultThumbnail from '../images/default-thumbnail-image.svg';
-import {uploadMediaToDatabase} from '../Backend/database';
+import {uploadMediaToDatabase, pushToStorage, loadMedia} from '../Backend/database';
+import MdMusicVideo from 'react-icons/lib/md/music-video';
 
 import './upload.css'
 
@@ -20,13 +21,21 @@ class Upload extends Component {
             description: "",
             tags: [], //TODO
             contentType: "",
-            storageUrl: ""
+            storageUrl: "",
+            albumArt: "none",
+            albumArtImg: ""
         }
         this.handleInputChange = this
             .handleInputChange
             .bind(this);
         this.handleSubmit = this
             .handleSubmit
+            .bind(this);
+        this.uploadAlbumArt = this
+            .uploadAlbumArt
+            .bind(this);
+        this.albumArtToDatabase = this
+            .albumArtToDatabase
             .bind(this);
     }
 
@@ -36,16 +45,15 @@ class Upload extends Component {
             .click();
     }
 
+    uploadAlbumArt() {
+        document
+            .getElementById('album-capture')
+            .click();
+    }
+
     // Talks to Firebase Storage
-    handleChange(selectorFiles : FileList)
-    {
-        const fileName = selectorFiles.name
-        const storageRef = fire
-            .storage()
-            .ref();
-        const uploadTask = storageRef
-            .child(fileName)
-            .put(selectorFiles);
+    handleChange(selectorFiles : FileList) {
+        let uploadTask = pushToStorage(selectorFiles);
 
         // Upload to Firebase Storage, most of this code is changing image displays
         uploadTask.on('state_changed', snapshot => {
@@ -83,10 +91,7 @@ class Upload extends Component {
                 .style
                 .display = "initial";
 
-            console.log("Done");
-
             let fullPath = uploadTask.snapshot.metadata.fullPath;
-            console.log(fire.storage().ref(fullPath).toString());
             this.setState({
                 contentType: uploadTask.snapshot.metadata.contentType,
                 storageUrl: fire
@@ -97,8 +102,42 @@ class Upload extends Component {
         });
     }
 
+    albumArtToDatabase(selectorFiles : FileList) {
+        let uploadTask = pushToStorage(selectorFiles);
+
+        uploadTask.on('state_changed', snapshot => {
+            var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            console.log("Progress: ", progress);
+        }, error => {
+            console.log("Error: ", error);
+        }, () => {
+            console.log("UploadTask", uploadTask);
+            console.log("UploadTask Snapshot", uploadTask.snapshot);
+
+            let fullPath = uploadTask.snapshot.metadata.fullPath;
+            this.setState({
+                albumArt: fire
+                    .storage()
+                    .ref(fullPath)
+                    .toString(),
+                albumArtImg: uploadTask.snapshot.downloadURL
+            });
+        });
+    }
+
     handleSubmit(event) {
-        uploadMediaToDatabase(this.state);
+        let databaseObj = {
+            thumbnailUrl: this.state.thumbnailUrl,
+            title: this.state.title,
+            description: this.state.description,
+            tags: this.state.tags,
+            contentType: this.state.contentType,
+            storageUrl: this.state.storageUrl
+        }
+        if (this.state.albumArt !== "none") {
+            databaseObj.albumArt = this.state.albumArt;
+        }
+        uploadMediaToDatabase(databaseObj);
     }
 
     handleInputChange(event, doubleCheck) {
@@ -114,6 +153,7 @@ class Upload extends Component {
     render() {
         return (
             <div id="upload-wrapper">
+
                 <div id="input-container">
                     <p className="label">Title:</p>
                     <input
@@ -133,12 +173,43 @@ class Upload extends Component {
                         onChange={this.handleInputChange}/>
                     <button
                         disabled={!this.state.title || !this.state.storageUrl || !this.state.contentType}
-                        className={(!this.state.title || !this.state.storageUrl || !this.state.contentType) ? "disabled": "enabled"}
+                        className={(!this.state.title || !this.state.storageUrl || !this.state.contentType)
+                        ? "disabled"
+                        : "enabled"}
                         id="submit-button"
                         onClick={this.handleSubmit}>Submit</button>
                 </div>
 
-                <div id="upload-container">
+                <div
+                    className={this
+                    .state
+                    .contentType
+                    .includes("audio")
+                    ? "upload-album-art-container"
+                    : "hide"}
+                    onClick={this.uploadAlbumArt}>
+                    <p id="upload-album-art-text">Click here for custom album art.</p>
+                    <MdMusicVideo
+                        size={150}
+                        className={this.state.albumArt === "none"
+                        ? "album-art-show"
+                        : "hide"}/>
+                    <img
+                        className={this.state.albumArt === "none"
+                        ? "hide"
+                        : "album-art-show"}
+                        src={this.state.albumArtImg}
+                        alt="Album Art"/>
+                </div>
+
+                <div
+                    id={this
+                    .state
+                    .contentType
+                    .includes("audio")
+                    ? "upload-container-small"
+                    : "upload-container"}>
+
                     <MdFileUpload
                         onClick={this.handleClick}
                         className="xxl-icon"
@@ -155,10 +226,16 @@ class Upload extends Component {
                         id="xxl-uploaded"
                         size={150}/>
                 </div>
+
                 <input
                     id="media-capture"
                     type="file"
                     onChange={(e) => this.handleChange(e.target.files[0])}/>
+
+                <input
+                    id="album-capture"
+                    type="file"
+                    onChange={(e) => this.albumArtToDatabase(e.target.files[0])}/>
             </div>
         )
     }

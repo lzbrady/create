@@ -40,6 +40,16 @@ export function uploadMediaToDatabase(state) {
     newCreationRef.update({owner: "user1id"});
 }
 
+export function pushToStorage(selectorFiles) {
+    const storageRef = fire
+        .storage()
+        .ref();
+
+    return storageRef
+        .child(selectorFiles.name)
+        .put(selectorFiles);
+}
+
 //TODO remove hard coded key
 export function getUsername() {
     let userRef = fire
