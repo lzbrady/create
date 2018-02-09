@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import DefaultThumbnail from '../images/default-thumbnail-image.svg';
-import {getCreationDetail} from '../Backend/database';
+import {getCreationDetail, pushCommentToCreation} from '../Backend/database';
 import ViewMedia from '../Viewer/Viewer'
 
 import './detail.css'
@@ -16,8 +16,16 @@ class Detail extends Component {
             contentType: "",
             storageUrl: "",
             comments: [],
-            albumArt: "none"
+            albumArt: "none",
+            comment: ""
         }
+
+        this.handleSubmit = this
+            .handleSubmit
+            .bind(this);
+        this.handleInputChange = this
+            .handleInputChange
+            .bind(this);
     }
 
     componentWillMount() {
@@ -38,6 +46,24 @@ class Detail extends Component {
         });
     }
 
+    handleInputChange(event, doubleCheck) {
+        const target = event.target;
+        const value = target.type === 'checkbox'
+            ? target.checked
+            : target.value;
+        const name = target.name;
+
+        this.setState({[name]: value});
+    }
+
+    handleSubmit(event) {
+        pushCommentToCreation(this.state.comment, this.props.match.params.String);
+        document
+            .getElementById("comment-input")
+            .value = "";
+        this.setState({comment: ""});
+    }
+
     render() {
         return (
             <div id="detail-wrapper">
@@ -53,12 +79,27 @@ class Detail extends Component {
                     </div>
                     <div id="detail-comment-wrapper">
                         <h1 className="detail-heading">Comments</h1>
-                        <ul className="detail-list">
-                            {this
-                                .state
-                                .comments
-                                .map((comment, index) => {
-                                    return <li className="detail-comment" key={index}>{comment}</li>;
+                        <ul className="detail-list" id="detail-comment-list">
+                            <input
+                                name="comment"
+                                type="text"
+                                placeholder="Leave a comment"
+                                className="detail-comment-input"
+                                id="comment-input"
+                                onChange={this.handleInputChange}/>
+                            <button
+                                disabled={!this.state.comment}
+                                className={(!this.state.comment)
+                                ? "comment-button-disabled"
+                                : "comment-button-enabled"}
+                                id="detail-comment-button"
+                                onClick={this.handleSubmit}>Comment</button>
+                            {(this.state.comments[0] === "No Comments Yet")
+                                ? <p>{this.state.comments[0]}</p>
+                                : this.state.comments.map((comment, index) => {
+                                    return <li className="detail-comment" key={index}>
+                                        <p className="detail-comment-id">{comment.id}</p>
+                                        {comment.comment}</li>;
                                 })}
                         </ul>
                     </div>

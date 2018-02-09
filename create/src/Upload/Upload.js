@@ -5,7 +5,7 @@ import MdFileUpload from 'react-icons/lib/md/file-upload';
 import MdCheckCircle from 'react-icons/lib/md/check-circle';
 import FaSpinner from 'react-icons/lib/fa/spinner';
 import DefaultThumbnail from '../images/default-thumbnail-image.svg';
-import {uploadMediaToDatabase, pushToStorage, loadMedia} from '../Backend/database';
+import {uploadMediaToDatabase, pushToStorage} from '../Backend/database';
 import MdMusicVideo from 'react-icons/lib/md/music-video';
 
 import './upload.css'
@@ -161,7 +161,6 @@ class Upload extends Component {
                         type="text"
                         className="input"
                         id="input-title"
-                        checked={this.state.isGoing}
                         onChange={this.handleInputChange}/>
                     <p className="label">Description:</p>
                     <textarea
@@ -169,7 +168,6 @@ class Upload extends Component {
                         type="text"
                         className="input"
                         id="input-description"
-                        value={this.state.numberOfGuests}
                         onChange={this.handleInputChange}/>
                     <button
                         disabled={!this.state.title || !this.state.storageUrl || !this.state.contentType}

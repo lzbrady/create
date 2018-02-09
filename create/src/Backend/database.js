@@ -50,6 +50,17 @@ export function pushToStorage(selectorFiles) {
         .put(selectorFiles);
 }
 
+export function pushCommentToCreation(comment, fbk) {
+    let adder = Math.floor(Math.random() * 100000) + 100000;
+    let commentKey = "user1id" + adder;
+    fire
+        .database()
+        .ref('creations')
+        .child(fbk)
+        .child("comments")
+        .update({[commentKey] : comment});
+}
+
 //TODO remove hard coded key
 export function getUsername() {
     let userRef = fire
@@ -80,10 +91,15 @@ export function getCreationDetail(fbk) {
         if (rtn.comments) {
             for (let key in rtnComments) {
                 if (rtnComments.hasOwnProperty(key)) {
-                    comments.push(rtnComments[key]);
+                    let commentID = key.substr(0, key.length - 6);
+                    let one_comment = {
+                        id: commentID,
+                        comment: rtnComments[key]
+                    };
+                    comments.push(one_comment);
                 }
             }
-            rtn.comments = comments;
+            rtn.comments = comments.reverse();
         }
 
         // Tags
