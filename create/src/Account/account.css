@@ -41,7 +41,7 @@
 #profile-skills-heading {
 }
 
-.skill {
+.skill, .tag {
     display: inline-block;
     margin: 5px;
     background: gray;

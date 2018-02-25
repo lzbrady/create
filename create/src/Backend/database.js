@@ -50,6 +50,13 @@ export function pushToStorage(selectorFiles) {
         .put(selectorFiles);
 }
 
+export function addToPendingList(storageUrl) {
+    fire
+        .database()
+        .ref('pending')
+        .push(storageUrl);
+}
+
 export function pushCommentToCreation(comment, fbk) {
     let adder = Math.floor(Math.random() * 100000) + 100000;
     let commentKey = "user1id" + adder;
@@ -58,7 +65,7 @@ export function pushCommentToCreation(comment, fbk) {
         .ref('creations')
         .child(fbk)
         .child("comments")
-        .update({[commentKey] : comment});
+        .update({[commentKey]: comment});
 }
 
 //TODO remove hard coded key
