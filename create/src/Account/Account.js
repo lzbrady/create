@@ -4,6 +4,8 @@ import './account.css';
 import MdMusicVideo from 'react-icons/lib/md/music-video';
 import fire from '../fire'
 
+import {getAccountInfo, getAccountCreation} from '../Backend/database';
+
 class Account extends Component {
     constructor(props) {
         super(props);
@@ -13,43 +15,46 @@ class Account extends Component {
             skills: [],
             creations: []
         };
+
+        this.newSkill = this
+            .newSkill
+            .bind(this);
     }
 
-    // Only method that uses Firebase. Kept in front end for real time updates, but has unused method in backend.
+    //TODO: fix
+    newSkill(event) {
+        if (event.key === "Enter") {
+            let tag = event.target.value;
+            if (tag !== undefined && tag.trim() !== "") {
+                let contains = false;
+                for (let i = 0; i < this.state.tags.length; i++) {
+                    if (this.state.tags[i].toLowerCase().trim() === tag.toLowerCase().trim()) {
+                        contains = true;
+                    }
+                }
+                if (!contains) {
+                    let newStateTags = this.state.tags;
+                    newStateTags.push(tag.trim());
+                    this.setState({tags: newStateTags})
+                }
+                event.target.value = "";
+            }
+        }
+    }
+
     componentWillMount() {
-        let userRef = fire
-            .database()
-            .ref('users')
-            .child('user1id');
-        let creationIds = [];
-        userRef.on('value', (snapshot) => {
-            let userInfo = snapshot.val();
-            let newSkills = [];
-            for (let skill in userInfo.skills) {
-                newSkills.push(skill);
-            }
-
-            for (let creation in userInfo.creations) {
-                creationIds.push(creation);
-            }
-            this.setState({name: userInfo.name, proPicUrl: userInfo.proPicUrl, skills: newSkills});
-
-            let creationsRef = fire
-                .database()
-                .ref('creations');
-
-            let newCreations = [];
-            creationIds.map(id => {
-                return creationsRef
-                    .child(id)
-                    .on('value', (snapshot) => {
-                        let newCreation = snapshot.val();
-                        newCreation.key = snapshot.key;
-                        newCreations.push(newCreation);
-                        this.setState({creations: newCreations})
-                        return snapshot;
-                    })
-            });
+        getAccountInfo().then((snapshot) => {
+            this.setState({name: snapshot.name, proPicUrl: snapshot.proPicUrl, skills: snapshot.skills});
+            let accountCreations = [];
+            snapshot
+                .creationIds
+                .map(id => {
+                    getAccountCreation(id).then((creation) => {
+                        let oldCreations = this.state.creations;
+                        oldCreations.push(creation);
+                        this.setState({creations: oldCreations});
+                    });
+                });
         });
     }
 
@@ -73,6 +78,11 @@ class Account extends Component {
                                 return <li className="skill" key={skill}>{skill}</li>;
                             })}
                     </ul>
+                    <input
+                        type="text"
+                        className="skill-input"
+                        placeholder="Add Skill!"
+                        onKeyPress={this.newSkill}/>
                 </div>
 
                 <div id="content-info-div" className="info-div">
@@ -86,7 +96,7 @@ class Account extends Component {
                                     <MdMusicVideo size={125}/>
                                 </div>
                                 <div className="creation-info">
-                                    <p className="creation-name">{creation.name}</p>
+                                    <p className="creation-name">{creation.title}</p>
                                     <p>{creation.description}</p>
                                 </div>
                             </div>;

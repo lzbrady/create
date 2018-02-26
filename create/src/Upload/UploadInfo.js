@@ -1,7 +1,5 @@
 import React, {Component} from "react";
 
-import MdMusicVideo from 'react-icons/lib/md/music-video';
-
 import './upload.css'
 
 class UploadInfo extends Component {

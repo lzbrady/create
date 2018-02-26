@@ -1,12 +1,8 @@
 import React, {Component} from "react";
-import fire from '../fire';
 
 import MdFileUpload from 'react-icons/lib/md/file-upload';
 import MdCheckCircle from 'react-icons/lib/md/check-circle';
 import FaSpinner from 'react-icons/lib/fa/spinner';
-import DefaultThumbnail from '../images/default-thumbnail-image.svg';
-import {uploadMediaToDatabase, pushToStorage} from '../Backend/database';
-import MdMusicVideo from 'react-icons/lib/md/music-video';
 
 import './upload.css'
 

@@ -42,17 +42,9 @@ export function uploadMediaToDatabase(state) {
     // purgeFromPendingList("user1id");
 }
 
-// function purgeFromPendingList(username) {
-//     fire
-//         .database()
-//         .ref('pending')
-//         .child(username + "0")
-//         .remove();
-//     fire
-//         .database()
-//         .ref('pending')
-//         .child(username + "1")
-//         .remove();
+// function purgeFromPendingList(username) {     fire         .database()
+// .ref('pending')         .child(username + "0")         .remove();     fire
+// .database()         .ref('pending')         .child(username + "1") .remove();
 // }
 
 export function pushToStorage(selectorFiles) {
@@ -76,39 +68,15 @@ function s4() {
         .substring(1);
 }
 
-// export function addToPendingList(storageUrl, int) {
-//     //TODO: remove hardcoded username
-//     let ref = fire
-//         .database()
-//         .ref('pending');
-
-//     ref
-//         .child("user1id" + int)
-//         .once('value', function (snapshot) {
-//             let exists = (snapshot.val() !== null);
-//             if (exists) {
-//                 let storageRef = fire
-//                     .storage()
-//                     .ref()
-//                     .child("user1id")
-//                     .child(snapshot.val());
-
-//                 // Delete the file
-//                 storageRef
-//                     .delete()
-//                     .then(function () {
-//                         console.log("Deleted")
-//                     })
-//                     .catch(function (error) {
-//                         console.log("Error", error);
-//                     });
-//             }
-//         });
-
-//     ref
-//         .child("user1id" + int)
-//         .set(storageUrl);
-// }
+// export function addToPendingList(storageUrl, int) {     //TODO: remove
+// hardcoded username     let ref = fire         .database() .ref('pending');
+// ref         .child("user1id" + int) .once('value', function (snapshot) { let
+// exists = (snapshot.val() !== null);             if (exists) {    let
+// storageRef = fire                  .storage()     .ref() .child("user1id")
+// .child(snapshot.val()); // Delete the file storageRef .delete()
+// .then(function () { console.log("Deleted") }) .catch(function (error) {
+// console.log("Error", error); });      }         }); ref .child("user1id" +
+// int)         .set(storageUrl); }
 
 export function pushCommentToCreation(comment, fbk) {
     let adder = Math.floor(Math.random() * 100000) + 100000;
@@ -213,7 +181,6 @@ export function loadMedia(storageUrl) {
     return promise;
 }
 
-// Unused
 export function getAccountInfo() {
     //TODO: Don't hard code user1id
     let userRef = fire
@@ -225,7 +192,7 @@ export function getAccountInfo() {
         name: "",
         proPicUrl: "",
         skills: [],
-        creations: []
+        creationIds: []
     };
 
     let p = userRef.once('value');
@@ -233,8 +200,6 @@ export function getAccountInfo() {
     let promise = p.then((snapshot) => {
         let userInfo = snapshot.val();
         let newSkills = [];
-        // let creationsRef = fire     .database()     .ref('creations'); let
-        // newCreations = [];
         let creationIds = [];
 
         for (let skill in userInfo.skills) {
@@ -248,9 +213,26 @@ export function getAccountInfo() {
         account.name = userInfo.name;
         account.proPicUrl = userInfo.proPicUrl;
         account.skills = newSkills;
-        account.creations = creationIds;
+        account.creationIds = creationIds;
 
         return account;
+    });
+    return promise;
+}
+
+export function getAccountCreation(creationId) {
+    let creationsRef = fire
+        .database()
+        .ref('creations');
+
+    let p = creationsRef
+        .child(creationId)
+        .once('value');
+
+    let promise = p.then((snapshot) => {
+        let newCreation = snapshot.val();
+        newCreation.key = snapshot.key;
+        return newCreation;
     });
     return promise;
 }
