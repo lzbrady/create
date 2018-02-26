@@ -4,7 +4,7 @@ import fire from '../fire';
 import UploadFile from './UploadFile';
 import UploadInfo from './UploadInfo';
 
-import {uploadMediaToDatabase, pushToStorage, addToPendingList} from '../Backend/database';
+import {uploadMediaToDatabase, pushToStorage} from '../Backend/database';
 
 import './upload.css'
 
@@ -34,7 +34,7 @@ class Upload extends Component {
             console.log("Error: ", error);
         }, () => {
             let fullPath = uploadTask.snapshot.metadata.fullPath;
-            addToPendingList(fire.storage().ref(fullPath).toString());
+            // addToPendingList(fire.storage().ref(fullPath).toString(), "0");
             this.setState({
                 contentType: uploadTask.snapshot.metadata.contentType,
                 storageUrl: fire
@@ -54,7 +54,7 @@ class Upload extends Component {
             console.log("Error: ", error);
         }, () => {
             let fullPath = uploadTask.snapshot.metadata.fullPath;
-            addToPendingList(fire.storage().ref(fullPath).toString());
+            // addToPendingList(fire.storage().ref(fullPath).toString(), "1");
             this.setState({
                 thumbnailUrl: fire
                     .storage()

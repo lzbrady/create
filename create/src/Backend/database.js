@@ -21,6 +21,7 @@ export function getAllCreations() {
 }
 
 export function uploadMediaToDatabase(state) {
+    //TODO: Remove hard coded username
     let newCreationRef = fire
         .database()
         .ref('creations')
@@ -38,7 +39,21 @@ export function uploadMediaToDatabase(state) {
         [newCreationRef.key]: true
     });
     newCreationRef.update({owner: "user1id"});
+    // purgeFromPendingList("user1id");
 }
+
+// function purgeFromPendingList(username) {
+//     fire
+//         .database()
+//         .ref('pending')
+//         .child(username + "0")
+//         .remove();
+//     fire
+//         .database()
+//         .ref('pending')
+//         .child(username + "1")
+//         .remove();
+// }
 
 export function pushToStorage(selectorFiles) {
     const storageRef = fire
@@ -46,16 +61,54 @@ export function pushToStorage(selectorFiles) {
         .ref();
 
     return storageRef
-        .child(selectorFiles.name)
+        .child("user1id")
+        .child(guid())
         .put(selectorFiles);
 }
 
-export function addToPendingList(storageUrl) {
-    fire
-        .database()
-        .ref('pending')
-        .push(storageUrl);
+function guid() {
+    return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
 }
+
+function s4() {
+    return Math.floor((1 + Math.random()) * 0x10000)
+        .toString(16)
+        .substring(1);
+}
+
+// export function addToPendingList(storageUrl, int) {
+//     //TODO: remove hardcoded username
+//     let ref = fire
+//         .database()
+//         .ref('pending');
+
+//     ref
+//         .child("user1id" + int)
+//         .once('value', function (snapshot) {
+//             let exists = (snapshot.val() !== null);
+//             if (exists) {
+//                 let storageRef = fire
+//                     .storage()
+//                     .ref()
+//                     .child("user1id")
+//                     .child(snapshot.val());
+
+//                 // Delete the file
+//                 storageRef
+//                     .delete()
+//                     .then(function () {
+//                         console.log("Deleted")
+//                     })
+//                     .catch(function (error) {
+//                         console.log("Error", error);
+//                     });
+//             }
+//         });
+
+//     ref
+//         .child("user1id" + int)
+//         .set(storageUrl);
+// }
 
 export function pushCommentToCreation(comment, fbk) {
     let adder = Math.floor(Math.random() * 100000) + 100000;
@@ -115,7 +168,7 @@ export function getCreationDetail(fbk) {
         if (rtn.tags) {
             for (let key in rtnTags) {
                 if (rtnTags.hasOwnProperty(key)) {
-                    tags.push(key);
+                    tags.push(rtnTags[key]);
                 }
             }
             rtn.tags = tags;
