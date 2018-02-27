@@ -1,4 +1,7 @@
-import fire from '../fire'
+import fire from '../fire';
+
+const defaultProfilePictureUrl = "https://firebasestorage.googleapis.com/v0/b/creators-inc.appspot.com/o/default-p" +
+        "rofile-picture.png?alt=media&token=60c3fc4c-5ab9-4b8c-b168-4dfc3b233a56";
 
 export function getAllCreations() {
     let creationsRef = fire
@@ -202,8 +205,10 @@ export function getAccountInfo() {
         let newSkills = [];
         let creationIds = [];
 
-        for (let skill in userInfo.skills) {
-            newSkills.push(skill);
+        for (let key in userInfo.skills) {
+            if (userInfo.skills.hasOwnProperty(key)) {
+                newSkills.push(userInfo.skills[key]);
+            }
         }
 
         for (let creation in userInfo.creations) {
@@ -235,6 +240,42 @@ export function getAccountCreation(creationId) {
         return newCreation;
     });
     return promise;
+}
+
+export function updateAccountInfo(state) {
+    fire
+        .database()
+        .ref('users')
+        .child('user1id')
+        .update(state);
+}
+
+export function setProfilePicture(selectorFiles) {
+    if (selectorFiles && selectorFiles.type.includes("image")) {
+        const storageRef = fire
+            .storage()
+            .ref();
+
+        let mediaRef = storageRef
+            .child("user1id")
+            .child('profilePicture');
+        mediaRef.put(selectorFiles);
+
+        // Get the download URL
+        let promise = mediaRef
+            .getDownloadURL()
+            .then(function (url) {
+                updateAccountInfo({proPicUrl: url});
+                return url;
+            })
+            .catch(function (error) {
+                console.log(error);
+                return defaultProfilePictureUrl;
+            });
+        return promise;
+    } else {
+        return defaultProfilePictureUrl;
+    }
 }
 
 // export default function ensureLoggedIn() {     return true; }

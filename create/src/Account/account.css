@@ -5,12 +5,12 @@
     float: left;
 }
 
-
 /* Profile Info */
 
 #profile-info-div {
     width: 30%;
     overflow: hidden;
+    text-align: center;
 }
 
 .profile-info {
@@ -18,17 +18,88 @@
     font-size: 1.3rem
 }
 
+.profile-name-container {
+    width: 90%;
+    margin: auto;
+    position: relative;
+}
+
+.edit-icon {
+    display: inline-block;
+    width: 24px;
+    position: absolute;
+    top: calc(50% - 12px);
+}
+
 #profile-name {
     font-size: 2rem;
+    background-color: transparent;
+    margin: 10px 0px;
+    width: calc(100% - 24px);
+    display: inline-block;
+    border: none;
+    border-bottom: 1px solid black;
+    padding: 0px 24px;
+    box-sizing: border-box;
+}
+
+#profile-name:focus {
+    outline: none;
+    border-bottom-width: 2px;
 }
 
 #profile-picture {
-    background-color: black;
-    width: 90%;
+    background-color: #4a246d;
     border-radius: 15px;
-    margin: auto;
     display: block;
+    width: 100%;
+    z-index: 5;
+    cursor: pointer;
+}
+
+#profile-picture-container:hover #profile-picture {
+    filter: grayscale(90);
+}
+
+#profile-picture-container {
+    margin: auto;
     margin-top: 5%;
+    width: 90%;
+    position: relative;
+}
+
+.profile-picture-camera-icon {
+    position: absolute;
+    width: 20%;
+    height: 20%;
+    top: 40%;
+    left: 40%;
+    cursor: pointer;
+    z-index: 10;
+    display: none;
+    color: #4a246d;
+}
+
+.profile-picture-text {
+    position: absolute;
+    color: #4a246d;
+    cursor: pointer;
+    z-index: 10;
+    display: none;
+    top: 60%;
+    width: 60%;
+    left: 20%;
+    font-weight: bold;
+    text-shadow: 0px 0px 5px white;
+}
+
+#profile-picture-container:hover .profile-picture-camera-icon,
+#profile-picture-container:hover .profile-picture-text {
+    display: block;
+}
+
+#profile-picture-capture {
+    display: none;
 }
 
 #skill-list {
@@ -38,10 +109,10 @@
     margin: 5px;
 }
 
-#profile-skills-heading {
-}
+#profile-skills-heading {}
 
-.skill, .tag {
+.skill,
+.tag {
     display: inline-block;
     margin: 5px;
     background: gray;
@@ -54,7 +125,6 @@
     margin-left: 15px;
     font-weight: bold;
 }
-
 
 /* Content Info */
 

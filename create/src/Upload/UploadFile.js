@@ -60,12 +60,10 @@ class UploadFile extends Component {
                     id="xxl-upload"
                     size={200}/>
                 <FaSpinner
-                    onClick={this.handleClick}
                     className="xxl-icon"
                     id="xxl-uploading"
                     size={100}/>
                 <MdCheckCircle
-                    onClick={this.handleClick}
                     className="xxl-icon"
                     id="xxl-uploaded"
                     size={150}/>

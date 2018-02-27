@@ -1,7 +1,8 @@
 #detail-image {
-    width: 100%;
+    max-width: 100%;
     margin: auto;
     color: white;
+    display: block;
 }
 
 #detail-image-wrapper {

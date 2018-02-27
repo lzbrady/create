@@ -89,7 +89,6 @@ class UploadInfo extends Component {
         if (tag !== undefined) {
             let newStateTags = this.state.tags;
             let index = newStateTags.indexOf(tag);
-            console.log(index)
             if (index > -1) {
                 newStateTags.splice(index, 1);
             }
