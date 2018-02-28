@@ -51,14 +51,16 @@ export function uploadMediaToDatabase(state) {
 // }
 
 export function pushToStorage(selectorFiles) {
-    const storageRef = fire
-        .storage()
-        .ref();
+    if (selectorFiles && selectorFiles.type.includes("image")) {
+        const storageRef = fire
+            .storage()
+            .ref();
 
-    return storageRef
-        .child("user1id")
-        .child(guid())
-        .put(selectorFiles);
+        return storageRef
+            .child("user1id")
+            .child(guid())
+            .put(selectorFiles);
+    }
 }
 
 function guid() {
@@ -237,6 +239,24 @@ export function getAccountCreation(creationId) {
     let promise = p.then((snapshot) => {
         let newCreation = snapshot.val();
         newCreation.key = snapshot.key;
+
+        // Comments
+        let rtnComments = newCreation.comments;
+        let comments = [];
+        if (newCreation.comments) {
+            for (let key in rtnComments) {
+                if (rtnComments.hasOwnProperty(key)) {
+                    let commentID = key;
+                    let one_comment = {
+                        id: commentID,
+                        comment: rtnComments[key]
+                    };
+                    comments.push(one_comment);
+                }
+            }
+            newCreation.comments = comments.reverse();
+        }
+
         return newCreation;
     });
     return promise;
@@ -248,6 +268,24 @@ export function updateAccountInfo(state) {
         .ref('users')
         .child('user1id')
         .update(state);
+}
+
+export function updateCreationInfo(fbk, state) {
+    fire
+        .database()
+        .ref('creations')
+        .child(fbk)
+        .update(state);
+}
+
+export function deleteCommentFromDatabase(fbk, commentId) {
+    fire
+        .database()
+        .ref('creations')
+        .child(fbk)
+        .child('comments')
+        .child(commentId)
+        .remove();
 }
 
 export function setProfilePicture(selectorFiles) {
@@ -275,6 +313,47 @@ export function setProfilePicture(selectorFiles) {
         return promise;
     } else {
         return defaultProfilePictureUrl;
+    }
+}
+
+export function setThumbnail(selectorFiles, fbk) {
+    if (selectorFiles && selectorFiles.type.includes("image")) {
+        const storageRef = fire
+            .storage()
+            .ref();
+
+        // Delete old thumbnail from storage
+        const oldThumbnail = fire
+            .database()
+            .ref()
+            .child("creations")
+            .child(fbk)
+            .child('thumbnailUrl');
+
+        oldThumbnail
+            .once('value')
+            .then((snapshot) => {
+                if (!String(snapshot.val()).includes("default-thumbnail")) {
+                    let thumbnailRef = fire
+                        .storage()
+                        .refFromURL(snapshot.val());
+                    thumbnailRef
+                        .delete()
+                        .then(function () {
+                            console.log("Deleted old thumbnail");
+                        })
+                        .catch(function (error) {
+                            console.log("Error deleting old thumbnail");
+                        });
+                }
+            });
+
+        // Upload new storage and change database
+        let rtn = pushToStorage(selectorFiles).then((newThumbnail) => {
+            oldThumbnail.set("gs://creators-inc.appspot.com/" + newThumbnail.metadata.fullPath);
+            return newThumbnail.downloadURL;
+        });
+        return rtn;
     }
 }
 

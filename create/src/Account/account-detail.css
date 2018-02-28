@@ -1,0 +1,212 @@
+#account-detail-wrapper {
+    background-color: yellow;
+    width: 98%;
+    margin: auto;
+    padding: 5px;
+    box-sizing: border-box;
+    margin-top: 1%;
+    max-height: 637px;
+    overflow: auto;
+}
+
+#account-detail-left {
+    background-color: orange;
+    width: 39%;
+    display: inline-block;
+    padding: 5px;
+    box-sizing: border-box;
+    text-align: center;
+    position: relative;
+    max-height: 561px;
+}
+
+#account-detail-right {
+    width: 59%;
+    background-color: rosybrown;
+    float: right;
+    padding: 5px;
+    max-height: 561px;
+}
+
+#account-detail-thumbnail {
+    width: 98%;
+    max-width: 200px;
+    border: 5px solid white;
+    max-height: 300px;
+    z-index: 5;
+    cursor: pointer;
+}
+
+.account-detail-thumbnail-container {
+    position: relative;
+}
+
+.account-detail-thumbnail-camera-icon {
+    position: absolute;
+    width: 20%;
+    height: 20%;
+    top: 40%;
+    left: 40%;
+    z-index: 10;
+    display: none;
+    color: #4a246d;
+    cursor: pointer;
+}
+
+.account-detail-thumbnail-container:hover .account-detail-thumbnail-camera-icon {
+    display: block;
+}
+
+.account-detail-thumbnail-container:hover #account-detail-thumbnail {
+    filter: grayscale(90);
+}
+
+#account-detail-title {
+    position: relative;
+    margin: 12px 0px;
+    box-sizing: border-box;
+}
+
+#account-detail-title-input {
+    border: none;
+    border-bottom: 1px solid black;
+    text-align: center;
+    font-size: 1.3rem;
+    height: 26px;
+}
+
+#account-detail-title-input:focus {
+    border-bottom-width: 2px;
+    outline: none;
+}
+
+.account-detail-info {
+    width: 96%;
+    margin: auto;
+    background-color: transparent;
+}
+
+#account-detail-description {
+    width: 96%;
+    margin: auto;
+}
+
+#account-detail-description-input {
+    border: 1px solid black;
+    padding: 2px;
+    font-size: 14px;
+    width: 100%;
+    min-width: 100%;
+    max-width: 100%;
+    height: 150px;
+    min-height: 75px;
+    box-sizing: border-box;
+    max-height: 275px;
+}
+
+#account-detail-description-input:focus {
+    border-width: 2px;
+    outline: none;
+}
+
+.account-detail-heading {
+    margin: 0px;
+    margin-left: 5px;
+}
+
+.account-detail-right-div {
+    width: 96%;
+    margin: auto;
+    border: 1px solid black;
+    max-height: 414px;
+}
+
+.account-detail-list {
+    list-style: none;
+    background-color: white;
+    width: 100%;
+    box-sizing: border-box;
+    margin: auto;
+    padding-left: 0px;
+    max-height: 414px;
+    overflow: scroll;
+}
+
+.account-detail-comment {
+    position: relative;
+    padding: 3px;
+}
+
+.account-detail-comment:hover {
+    background-color: gainsboro;
+}
+
+.account-detail-comment-id {
+    font-size: 18px;
+    font-weight: bold;
+    padding-left: 2px;
+    margin: 0px;
+}
+
+.account-detail-comment-comment {
+    margin: 0px;
+    padding: 2px 0px 2px 20px;
+}
+
+.account-detail-trash-icon {
+    vertical-align: middle;
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    top: calc(50% - 15px);
+    right: 10px;
+}
+
+.account-detail-trash-icon:hover {
+    cursor: pointer;
+    color: red;
+}
+
+#account-detail-no-comments {
+    text-align: center;
+    margin: 0px;
+    padding: 15px;
+}
+
+#account-detail-thumbnail-capture {
+    display: none;
+}
+
+#account-detail-bottom {
+    height: 30px;
+    box-sizing: border-box;
+    overflow: hidden;
+    text-align: right;
+}
+
+#account-detail-bottom button {
+    width: 100px;
+    height: 26px;
+    box-sizing: border-box;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    margin: 2px;
+    cursor: pointer;
+}
+
+#account-detail-done {
+    background-color: #20c563;
+}
+
+#account-detail-done:hover {
+    background-color: #1b954d;
+}
+
+#account-detail-delete {
+    background-color: #e43a1e;
+}
+
+#account-detail-delete:hover {
+    background-color: #b1301b;
+}

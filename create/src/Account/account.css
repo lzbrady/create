@@ -15,7 +15,7 @@
 
 .profile-info {
     text-align: center;
-    font-size: 1.3rem
+    font-size: 1.3rem;
 }
 
 .profile-name-container {
@@ -146,6 +146,7 @@
     padding: 0px 10px;
     margin-bottom: 10px;
     height: 125px;
+    cursor: pointer;
 }
 
 .creation-icon {

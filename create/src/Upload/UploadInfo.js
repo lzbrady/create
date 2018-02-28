@@ -77,7 +77,7 @@ class UploadInfo extends Component {
                 if (!contains) {
                     let newStateTags = this.state.tags;
                     newStateTags.push(tag.trim());
-                    this.setState({tags: newStateTags})
+                    this.setState({tags: newStateTags});
                 }
                 event.target.value = "";
             }
@@ -92,7 +92,7 @@ class UploadInfo extends Component {
             if (index > -1) {
                 newStateTags.splice(index, 1);
             }
-            this.setState({tags: newStateTags})
+            this.setState({tags: newStateTags});
         }
     }
 

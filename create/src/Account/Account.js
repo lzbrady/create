@@ -4,6 +4,7 @@ import './account.css';
 import MdMusicVideo from 'react-icons/lib/md/music-video';
 import FaPencil from 'react-icons/lib/fa/pencil';
 import MdCameraAlt from 'react-icons/lib/md/camera-alt';
+import AccountDetailCreation from './AccountDetailCreation';
 
 import {getAccountInfo, getAccountCreation, updateAccountInfo, setProfilePicture} from '../Backend/database';
 
@@ -14,7 +15,8 @@ class Account extends Component {
             name: "",
             proPicUrl: "",
             skills: [],
-            creations: []
+            creations: [],
+            detailCreation: ""
         };
 
         this.newSkill = this
@@ -28,6 +30,12 @@ class Account extends Component {
             .bind(this);
         this.uploadProfilePicture = this
             .uploadProfilePicture
+            .bind(this);
+        this.viewCreationDetail = this
+            .viewCreationDetail
+            .bind(this);
+        this.closeDetailView = this
+            .closeDetailView
             .bind(this);
     }
 
@@ -106,6 +114,19 @@ class Account extends Component {
         });
     }
 
+    viewCreationDetail(ck) {
+        if (this.state.detailCreation === ck) {
+            this.setState({detailCreation: ""});
+        } else {
+            this.setState({detailCreation: ck});
+        }
+    }
+
+    closeDetailView(op, ck) {
+        console.log("OP:", op);
+        console.log("CK:", ck);
+    }
+
     render() {
         return (
             <div id="wrapper">
@@ -154,12 +175,18 @@ class Account extends Component {
                 </div>
 
                 <div id="content-info-div" className="info-div">
+                    <AccountDetailCreation
+                        ck={this.state.detailCreation}
+                        closeOperation={(op) => this.closeDetailView(op, this.state.detailCreation)}/>
                     <p className="account-heading" id="content-heading">Creations:</p>
                     {this
                         .state
                         .creations
                         .map((creation) => {
-                            return <div className="creation" key={creation.key}>
+                            return <div
+                                className="creation"
+                                key={creation.key}
+                                onClick={e => this.viewCreationDetail(creation.key)}>
                                 <div className="creation-icon">
                                     <MdMusicVideo size={125}/>
                                 </div>
