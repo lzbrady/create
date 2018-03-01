@@ -288,6 +288,21 @@ export function deleteCommentFromDatabase(fbk, commentId) {
         .remove();
 }
 
+export function deleteCreation(ck) {
+    fire
+        .database()
+        .ref('creations')
+        .child(ck)
+        .remove();
+    fire
+        .database()
+        .ref('users')
+        .child('user1id')
+        .child('creations')
+        .child(ck)
+        .remove();
+}
+
 export function setProfilePicture(selectorFiles) {
     if (selectorFiles && selectorFiles.type.includes("image")) {
         const storageRef = fire

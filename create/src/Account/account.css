@@ -80,21 +80,7 @@
     color: #4a246d;
 }
 
-.profile-picture-text {
-    position: absolute;
-    color: #4a246d;
-    cursor: pointer;
-    z-index: 10;
-    display: none;
-    top: 60%;
-    width: 60%;
-    left: 20%;
-    font-weight: bold;
-    text-shadow: 0px 0px 5px white;
-}
-
-#profile-picture-container:hover .profile-picture-camera-icon,
-#profile-picture-container:hover .profile-picture-text {
+#profile-picture-container:hover .profile-picture-camera-icon {
     display: block;
 }
 

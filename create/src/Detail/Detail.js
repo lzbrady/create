@@ -1,5 +1,4 @@
 import React, {Component} from "react";
-import DefaultThumbnail from '../images/default-thumbnail-image.svg';
 import {getCreationDetail, pushCommentToCreation} from '../Backend/database';
 import ViewMedia from '../Viewer/Viewer'
 
@@ -9,14 +8,13 @@ class Detail extends Component {
     constructor() {
         super();
         this.state = {
-            thumbnailUrl: DefaultThumbnail, //TODO
+            thumbnailUrl: "",
             title: "",
             description: "",
-            tags: [], //TODO
+            tags: [],
             contentType: "",
             storageUrl: "",
             comments: [],
-            albumArt: "none",
             comment: ""
         }
 
@@ -31,8 +29,8 @@ class Detail extends Component {
     componentWillMount() {
         let fbk = this.props.match.params.String;
         getCreationDetail(fbk).then((data) => {
-            let tags = data.tags || ["No Tags Yet"];
-            let comments = data.comments || ["No Comments Yet"];
+            let tags = data.tags || [];
+            let comments = data.comments || [];
             this.setState({
                 thumbnailUrl: data.thumbnailUrl,
                 title: data.title,
@@ -40,8 +38,7 @@ class Detail extends Component {
                 tags: tags,
                 comments: comments,
                 contentType: data.contentType,
-                storageUrl: data.storageUrl,
-                albumArt: data.albumArt
+                storageUrl: data.storageUrl
             });
         });
     }
@@ -61,7 +58,9 @@ class Detail extends Component {
         document
             .getElementById("comment-input")
             .value = "";
-        this.setState({comment: ""});
+        let newComments = this.state.comments;
+        newComments.push({id: "user1id", comment: this.state.comment});
+        this.setState({comments: newComments, comment: ""});
     }
 
     render() {
@@ -108,10 +107,9 @@ class Detail extends Component {
                     <div id="detail-tag-wrapper">
                         <h1 className="detail-heading">Tags</h1>
                         <ul className="detail-list">
-                            {this
-                                .state
-                                .tags
-                                .map((tag, index) => {
+                            {(this.state.tags.length === 0)
+                                ? <p id="detail-creation-no-tags">No Tags Yet</p>
+                                : this.state.tags.map((tag, index) => {
                                     return <li className="detail-tag" key={index}>{tag}</li>;
                                 })}
                         </ul>

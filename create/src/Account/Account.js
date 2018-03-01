@@ -6,7 +6,7 @@ import FaPencil from 'react-icons/lib/fa/pencil';
 import MdCameraAlt from 'react-icons/lib/md/camera-alt';
 import AccountDetailCreation from './AccountDetailCreation';
 
-import {getAccountInfo, getAccountCreation, updateAccountInfo, setProfilePicture} from '../Backend/database';
+import {getAccountInfo, getAccountCreation, updateAccountInfo, setProfilePicture, deleteCreation} from '../Backend/database';
 
 class Account extends Component {
     constructor(props) {
@@ -33,9 +33,6 @@ class Account extends Component {
             .bind(this);
         this.viewCreationDetail = this
             .viewCreationDetail
-            .bind(this);
-        this.closeDetailView = this
-            .closeDetailView
             .bind(this);
     }
 
@@ -96,6 +93,9 @@ class Account extends Component {
     uploadProfilePicture(selectorFiles : FileList) {
         setProfilePicture(selectorFiles).then((url) => {
             this.setState({proPicUrl: url});
+            window
+                .location
+                .reload();
         });
     }
 
@@ -122,9 +122,16 @@ class Account extends Component {
         }
     }
 
-    closeDetailView(op, ck) {
-        console.log("OP:", op);
-        console.log("CK:", ck);
+    closeDetailView = (ck) => {
+        this.setState({detailCreation: ""});
+    }
+
+    deleteCreation = (ck) => {
+        this.setState({detailCreation: ""});
+        deleteCreation(ck);
+        window
+            .location
+            .reload();
     }
 
     render() {
@@ -137,7 +144,6 @@ class Account extends Component {
                             id="profile-picture"
                             src={this.state.proPicUrl}
                             alt="Profile Pic"/>
-                        <p className="profile-picture-text">Refresh after Updating</p>
                         <MdCameraAlt className="profile-picture-camera-icon"/>
                         <input
                             id="profile-picture-capture"
@@ -177,7 +183,8 @@ class Account extends Component {
                 <div id="content-info-div" className="info-div">
                     <AccountDetailCreation
                         ck={this.state.detailCreation}
-                        closeOperation={(op) => this.closeDetailView(op, this.state.detailCreation)}/>
+                        closeOperation={this.closeDetailView}
+                        deleteOperation={this.deleteCreation}/>
                     <p className="account-heading" id="content-heading">Creations:</p>
                     {this
                         .state

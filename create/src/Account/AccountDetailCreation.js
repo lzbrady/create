@@ -43,7 +43,11 @@ class AccountDetailCreation extends Component {
     }
 
     componentDidUpdate() {
+        if (this.props.ck === "" && this.state.ck !== "") {
+            this.setState({ck: ""});
+        }
         if (this.props.ck !== "" && this.props.ck !== this.state.ck) {
+            this.setState({thumbnailUrl: ""});            
             let fbk = this.props.ck;
             if (fbk !== "") {
                 getAccountCreation(fbk).then((data) => {
@@ -228,8 +232,16 @@ class AccountDetailCreation extends Component {
                     </div>
                 </div>
                 <div id="account-detail-bottom">
-                    <button onClick={e => this.props.closeDetailView("done")} id="account-detail-done">Done</button>
-                    <button onClick={e => this.props.closeDetailView("delete")} id="account-detail-delete">Delete</button>
+                    <button
+                        onClick={e => this
+                        .props
+                        .closeOperation(this.state.ck)}
+                        id="account-detail-done">Done</button>
+                    <button
+                        onClick={e => this
+                        .props
+                        .deleteOperation(this.state.ck)}
+                        id="account-detail-delete">Delete</button>
                 </div>
             </div>
         )
