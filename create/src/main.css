@@ -10,7 +10,6 @@ body {
     display: table;
 }
 
-
 /* Search Bar and Suggestion */
 
 #searchbar {
@@ -65,7 +64,6 @@ body {
     background-color: lightgrey;
 }
 
-
 /* Menu */
 
 #hidden-menu {
@@ -97,7 +95,12 @@ body {
     margin-right: 5px;
 }
 
-ul .menu-account-icon {
+.menu-text {
+    margin: 0px;
+    font-size: 20px;
+}
+
+.menu-sandwich {
     right: 240px;
     position: absolute;
     top: 10px;

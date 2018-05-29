@@ -13,6 +13,7 @@ import ReactTooltip from 'react-tooltip'
 
 import MdAccountCircle from 'react-icons/lib/md/account-circle';
 import MdFileUpload from 'react-icons/lib/md/file-upload';
+import MdMenu from 'react-icons/lib/md/menu';
 
 // Imagine you have a list of languages that you'd like to autosuggest.
 const languages = [
@@ -98,7 +99,7 @@ class Main extends Component {
     };
 
     componentWillMount() {
-        getUsername().then((username) =>{
+        getUsername().then((username) => {
             this.setState({name: username});
         });
     }
@@ -133,7 +134,7 @@ class Main extends Component {
             <HashRouter>
                 <div>
                     <NavLink to="/" id="company-name-link">
-                        <h1 id="company-name">Creators Inc</h1>
+                        <h1 id="company-name">Create</h1>
                     </NavLink>
                     <Autosuggest
                         suggestions={suggestions}
@@ -145,20 +146,32 @@ class Main extends Component {
 
                     <div id="menu-icon-div">
                         <ul id="menu-icon-list">
+                            <NavLink to="/">
+                                <li data-tip="Creations" className='menu-icon'>
+                                    <p className="menu-text">Home</p>
+                                </li>
+                            </NavLink>
                             <NavLink to="/upload">
                                 <li data-tip="Upload" className='menu-icon'>
                                     <MdFileUpload/>
                                 </li>
                             </NavLink>
+                            <NavLink to="/account">
+                                <li data-tip="Account" className='menu-icon'>
+                                    <MdAccountCircle/>
+                                </li>
+                            </NavLink>
                             <li
-                                data-tip="Account"
+                                data-tip={(menu == null)
+                                ? "Menu"
+                                : "Close"}
                                 className={`menu-icon${ (menu == null)
                                 ? ''
-                                : ' menu-account-icon'}`}
+                                : ' menu-sandwich'}`}
                                 onClick={() => {
                                 this.handleToggleClick()
                             }}>
-                                <MdAccountCircle/>
+                                <MdMenu/>
                             </li>
                             <ReactTooltip place="bottom" type="info" delayShow={200} effect="solid"/>
                         </ul>

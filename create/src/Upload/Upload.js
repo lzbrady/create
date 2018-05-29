@@ -5,6 +5,7 @@ import UploadFile from './UploadFile';
 import UploadInfo from './UploadInfo';
 
 import {uploadMediaToDatabase, pushToStorage} from '../Backend/database';
+// import {upload} from '../Backend/s3';
 
 import './upload.css'
 
@@ -26,23 +27,24 @@ class Upload extends Component {
     getSelectorFile = (selectorFile) => {
         this.setState({contentType: selectorFile.type});
 
+        // upload(selectorFile);
         let uploadTask = pushToStorage(selectorFile);
-        uploadTask.on('state_changed', snapshot => {
-            var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-            console.log("Progress: ", progress);
-        }, error => {
-            console.log("Error: ", error);
-        }, () => {
-            let fullPath = uploadTask.snapshot.metadata.fullPath;
-            // addToPendingList(fire.storage().ref(fullPath).toString(), "0");
-            this.setState({
-                contentType: uploadTask.snapshot.metadata.contentType,
-                storageUrl: fire
-                    .storage()
-                    .ref(fullPath)
-                    .toString()
-            });
-        });
+        // uploadTask.on('state_changed', snapshot => {
+        //     var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        //     console.log("Progress: ", progress);
+        // }, error => {
+        //     console.log("Error: ", error);
+        // }, () => {
+        //     let fullPath = uploadTask.snapshot.metadata.fullPath;
+        //     // addToPendingList(fire.storage().ref(fullPath).toString(), "0");
+        //     this.setState({
+        //         contentType: uploadTask.snapshot.metadata.contentType,
+        //         storageUrl: fire
+        //             .storage()
+        //             .ref(fullPath)
+        //             .toString()
+        //     });
+        // });
     };
 
     getThumbnailSelectorFile = (selectorFile) => {

@@ -21,7 +21,7 @@ class UploadFile extends Component {
             .click();
     }
 
-    handleChange(selectorFiles : FileList) {
+    handleChange(selectorFiles : File) {
         document
             .getElementById('xxl-upload')
             .style
@@ -59,14 +59,8 @@ class UploadFile extends Component {
                     className="xxl-icon"
                     id="xxl-upload"
                     size={200}/>
-                <FaSpinner
-                    className="xxl-icon"
-                    id="xxl-uploading"
-                    size={100}/>
-                <MdCheckCircle
-                    className="xxl-icon"
-                    id="xxl-uploaded"
-                    size={150}/>
+                <FaSpinner className="xxl-icon" id="xxl-uploading" size={100}/>
+                <MdCheckCircle className="xxl-icon" id="xxl-uploaded" size={150}/>
 
                 <input
                     id="media-capture"

@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import {getCreationDetail, pushCommentToCreation} from '../Backend/database';
-import ViewMedia from '../Viewer/Viewer'
+import ViewMedia from '../Viewer/Viewer';
 
 import './detail.css'
 
