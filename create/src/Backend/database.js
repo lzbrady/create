@@ -2,8 +2,6 @@ import fire from '../fire';
 
 const defaultProfilePictureUrl = "https://firebasestorage.googleapis.com/v0/b/creators-inc.appspot.com/o/default-p" +
         "rofile-picture.png?alt=media&token=60c3fc4c-5ab9-4b8c-b168-4dfc3b233a56";
-var Zencoder = require('zencoder');
-var client = Zencoder('6f8d8381a89797b04cb522f5cdbf91a1');
 
 export function getAllCreations() {
     let creationsRef = fire
@@ -23,6 +21,52 @@ export function getAllCreations() {
         return newCreations;
     });
     return promise;
+}
+
+export function post(post, imageFile) {
+    if (imageFile.type && !imageFile.type.includes("image")) {
+        return {error: "We currently only support posting text and images"};
+    }
+    if (imageFile.type) {
+        return pushToStorage(imageFile).then((snapshot) => {
+            let pid = fire
+                .database()
+                .ref('posts')
+                .push({
+                    post: post,
+                    uid: "user1id",
+                    imageLocation: snapshot.metadata.fullPath,
+                    timestamp: Date.now()
+                });
+            fire
+                .database()
+                .ref('users')
+                .child("user1id")
+                .child("posts")
+                .child(pid.key)
+                .set(true);
+            return {success: true};
+        });
+    } else {
+        let pid = fire
+            .database()
+            .ref('posts')
+            .push({
+                post: post,
+                uid: "user1id",
+                timestamp: Date.now()
+            });
+
+        fire
+            .database()
+            .ref('users')
+            .child("user1id")
+            .child("posts")
+            .child(pid.key)
+            .set(true);
+        return {success: true};
+
+    }
 }
 
 export function uploadMediaToDatabase(state) {
@@ -53,107 +97,12 @@ export function uploadMediaToDatabase(state) {
 // }
 
 export function pushToStorage(selectorFiles) {
-    if (selectorFiles.type.includes("video")) {
-        console.log("VIDEO");
-        const storageRef = fire
-            .storage()
-            .ref();
-
-        let rtn = storageRef
-            .child("test")
-            .child(guid())
-            .put(selectorFiles);
-        rtn.then((data) => {
-            console.log("Video Firebase Callback", data);
-            client
-                .Job
-                .create({
-                    input: data.downloadURL,
-                    test: true,
-                    "outputs": [
-                        {
-                            "label": "mp4 high",
-                            "url": data.downloadURL,
-                            "h264_profile": "high"
-                        }, {
-                            "url": data.downloadURL,
-                            "label": "webm",
-                            "format": "webm"
-                        }, {
-                            "url": data.downloadURL,
-                            "label": "ogg",
-                            "format": "ogg"
-                        }, {
-                            "url": data.downloadURL,
-                            "label": "mp4 low",
-                            "size": "640x480"
-                        }
-                    ]
-                }, (err, d) => zencoderCallback(err, d, data));
-        });
-        return rtn;
-    }
-    if (selectorFiles && selectorFiles.type.includes("image")) {
-        const storageRef = fire
-            .storage()
-            .ref();
-
-        return storageRef
-            .child("user1id")
-            .child(guid())
-            .put(selectorFiles);
-    }
-}
-
-function zencoderCallback(err, data, fbEntry) {
-    // if err is not null, something went wrong. Print it out and return.
-    if (err) {
-        console.log(err);
-        return;
-    }
-
-    // otherwise all is well. Do things with the response.
-    console.log("Data", data);
-    console.log("FB Entry", fbEntry);
-
-    zencoderCheckJob(data.id);
-    // client     .Output     .details(data.id, zencoderOutputCallback);
-}
-
-function zencoderCheckJob(id) {
-    setTimeout(function () {
-        client
-            .Job
-            .progress(id, function (err, data) {
-                if (err) {
-                    console.log("OH NO! There was an error");
-                    return err;
-                } // blargh!
-                if (data.state == 'waiting') {
-                    console.log("Waiting...");
-                    zencoderCheckJob(id);
-                } else if (data.state == 'processing') {
-                    var progress = Math.round(data.progress * 100) / 100; // round to nearest decimal places.
-                    console.log("Processing", progress);
-                    this.status = 'processing'; // not important, but makes sure we don't display waiting again
-                    zencoderCheckJob(id);
-                } else if (data.state == 'finished') {
-                    console.log('Job finished!'); // finished!
-                    process.exit(0); // exit
-                }
-            }, 5000);
-    });
-}
-
-function zencoderOutputCallback(err, data) {
-    // if err is not null, something went wrong. Print it out and return.
-    if (err) {
-        console.log(err);
-        return;
-    }
-
-    // otherwise all is well. Do things with the response.
-    console.log("Data", data);
+    return fire
+        .storage()
+        .ref()
+        .child("user1id")
+        .child(guid())
+        .put(selectorFiles);
 }
 
 function guid() {

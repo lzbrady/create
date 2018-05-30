@@ -1,11 +1,7 @@
 import React, {Component} from "react";
-import fire from '../fire';
 
-import UploadFile from './UploadFile';
-import UploadInfo from './UploadInfo';
-
-import {uploadMediaToDatabase, pushToStorage} from '../Backend/database';
-// import {upload} from '../Backend/s3';
+import MdImage from 'react-icons/lib/md/image';
+import {post} from '../Backend/database';
 
 import './upload.css'
 
@@ -15,79 +11,91 @@ class Upload extends Component {
         super();
 
         this.state = {
-            thumbnailUrl: "",
-            title: "",
-            description: "",
-            tags: [],
-            contentType: "",
-            storageUrl: ""
+            post: "",
+            image: {},
+            postSuccess: false,
+            postError: false,
+            errorMessage: "",
+            postButtonMessage: "Post"
+        }
+
+        this.handleChange = this
+            .handleChange
+            .bind(this);
+        this.handleInputChange = this
+            .handleInputChange
+            .bind(this);
+        this.handlePost = this
+            .handlePost
+            .bind(this);
+    }
+
+    handleClick() {
+        document
+            .getElementById('media-capture')
+            .click();
+    }
+
+    handleInputChange(event) {
+        const target = event.target;
+        const value = target.type === 'checkbox'
+            ? target.checked
+            : target.value;
+        const name = target.name;
+
+        this.setState({[name]: value, postSuccess: false, postError: false, postButtonMessage: "Post", errorMessage: ""});
+    }
+
+    handleChange(selectorFiles) {
+        if (selectorFiles.type.includes("image")) {
+            this.setState({image: selectorFiles});
+        } else {
+            console.log("NAH")
         }
     }
 
-    getSelectorFile = (selectorFile) => {
-        this.setState({contentType: selectorFile.type});
-
-        // upload(selectorFile);
-        let uploadTask = pushToStorage(selectorFile);
-        // uploadTask.on('state_changed', snapshot => {
-        //     var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        //     console.log("Progress: ", progress);
-        // }, error => {
-        //     console.log("Error: ", error);
-        // }, () => {
-        //     let fullPath = uploadTask.snapshot.metadata.fullPath;
-        //     // addToPendingList(fire.storage().ref(fullPath).toString(), "0");
-        //     this.setState({
-        //         contentType: uploadTask.snapshot.metadata.contentType,
-        //         storageUrl: fire
-        //             .storage()
-        //             .ref(fullPath)
-        //             .toString()
-        //     });
-        // });
-    };
-
-    getThumbnailSelectorFile = (selectorFile) => {
-        let uploadTask = pushToStorage(selectorFile);
-        uploadTask.on('state_changed', snapshot => {
-            var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-            console.log("Progress: ", progress);
-        }, error => {
-            console.log("Error: ", error);
-        }, () => {
-            let fullPath = uploadTask.snapshot.metadata.fullPath;
-            // addToPendingList(fire.storage().ref(fullPath).toString(), "1");
-            this.setState({
-                thumbnailUrl: fire
-                    .storage()
-                    .ref(fullPath)
-                    .toString()
-            });
-        });
+    handlePost() {
+        let postRequest = post(this.state.post, this.state.image);
+        if (postRequest.success) {
+            this.setState({postSuccess: true, postError: false, errorMessage: ""});
+        } else if (postRequest.error) {
+            this.setState({postSuccess: false, postError: true, errorMessage: postRequest.error});
+        } else {
+            postRequest.then((result) => {
+                if (result.success) {
+                    this.setState({postSuccess: true, postError: false, errorMessage: ""});
+                } else if (result.error) {
+                    this.setState({postSuccess: false, postError: true, errorMessage: postRequest.error});
+                }
+            })
+        }
     }
-
-    getCreationMetadata = (metadata) => {
-        let databaseObj = this.state;
-        databaseObj.title = metadata.title;
-        databaseObj.description = metadata.description;
-        databaseObj.tags = metadata.tags;
-        uploadMediaToDatabase(databaseObj);
-    };
 
     render() {
         return (
             <div id="upload-wrapper">
-                <UploadFile
-                    className={this.state.contentType === ""
-                    ? "show"
-                    : "hide"}
-                    giveSelectorFile={this.getSelectorFile}/>
-                <UploadInfo
-                    className={this.state.contentType === ""
-                    ? "hide"
-                    : "show"}
-                    giveCreationMetadata={this.getCreationMetadata}
-                    giveThumbnailSelectorFile={this.getThumbnailSelectorFile}/>
+                <textarea
+                    name="post"
+                    type="text"
+                    className="post-text-input"
+                    placeholder="Write post"
+                    onChange={this.handleInputChange}/>
+
+                <div className="post-button-container">
+                    <button
+                        className={this.state.postSuccess
+                        ? "post-button post-button-success"
+                        : this.state.postError
+                            ? "post-button post-button-error"
+                            : "post-button"}
+                        onClick={this.handlePost}>{this.state.postButtonMessage}</button>
+                    <MdImage onClick={this.handleClick} className="post-icon" size={200}/>
+                </div>
+
+                <input
+                    id="media-capture"
+                    type="file"
+                    onChange={(e) => this.handleChange(e.target.files[0])}/>
             </div>
         );
     }

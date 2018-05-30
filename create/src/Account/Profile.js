@@ -1,30 +1,29 @@
 import React, {Component} from 'react';
-import {NavLink} from "react-router-dom";
-import Upload from '../Upload/Upload';
-
 import './account.css';
 
+import MdMusicVideo from 'react-icons/lib/md/music-video';
 import FaPencil from 'react-icons/lib/fa/pencil';
 import MdCameraAlt from 'react-icons/lib/md/camera-alt';
+import AccountDetailCreation from './AccountDetailCreation';
 
-import ProfileLinks from './Profile-Links';
-import Feed from './Feed';
-import Reviews from './Reviews';
-import Collabs from './Collabs';
+import Applemusic from '../images/logos/applemusic-logo.png';
+import Facebook from '../images/logos/facebook-logo.png';
+import Soundcloud from '../images/logos/soundcloud-logo.png';
+import Spotify from '../images/logos/spotify-logo.png';
+import Twitter from '../images/logos/twitter-logo.png';
+import Website from '../images/logos/web-logo.png';
+import Youtube from '../images/logos/youtube-logo.png';
 
-import {getAccountInfo, updateAccountInfo, setProfilePicture} from '../Backend/database';
+import {getAccountInfo, getAccountCreation, updateAccountInfo, setProfilePicture, deleteCreation} from '../Backend/database';
 
-class Account extends Component {
+class Profile extends Component {
     constructor(props) {
         super(props);
         this.state = {
             name: "",
             proPicUrl: "",
             skills: [],
-            detailCreation: "",
-            showFeed: true,
-            showReviews: false,
-            showWorkedWith: false
+            detailCreation: ""
         };
 
         this.newSkill = this
@@ -158,30 +157,26 @@ class Account extends Component {
 
                 <div id="content-info-div" className="info-div">
                     <div className="profile-btn-div">
-                        <Upload/>
+                        <p className="profile-btn">Contact</p>
                     </div>
-
-                    <ProfileLinks/>
-
-                    <div className="profile-tabs">
-                        <p
-                            className="profile-tab"
-                            onClick={() => this.setState({showFeed: true, showReviews: false, showWorkedWith: false})}>Feed</p>
-                        <p
-                            className="profile-tab"
-                            onClick={() => this.setState({showFeed: false, showReviews: true, showWorkedWith: false})}>Reviews</p>
-                        <p
-                            className="profile-tab"
-                            onClick={() => this.setState({showFeed: false, showReviews: false, showWorkedWith: true})}>Collabs</p>
+                    <div className="profile-links-container">
+                        <img src={Applemusic} alt="Apple Music" className="profile-link"/>
+                        <img src={Facebook} alt="Apple Music" className="profile-link"/>
+                        <img src={Soundcloud} alt="Apple Music" className="profile-link"/>
+                        <img src={Spotify} alt="Apple Music" className="profile-link"/>
+                        <img src={Twitter} alt="Apple Music" className="profile-link"/>
+                        <img src={Website} alt="Apple Music" className="profile-link"/>
+                        <img src={Youtube} alt="Apple Music" className="profile-link"/>
                     </div>
-
-                    {this.state.showFeed && <Feed/>}
-                    {this.state.showReviews && <Reviews/>}
-                    {this.state.showWorkedWith && <Collabs/>}
+                    <AccountDetailCreation
+                        ck={this.state.detailCreation}
+                        closeOperation={this.closeDetailView}
+                        deleteOperation={this.deleteCreation}/>
+                    <p className="account-heading" id="content-heading">Creations:</p>
                 </div>
             </div>
         );
     }
 }
 
-export default Account;
+export default Profile;

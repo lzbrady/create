@@ -3,7 +3,6 @@ import {Route, NavLink, HashRouter} from "react-router-dom";
 
 import Home from "./Home/Home";
 import Account from "./Account/Account";
-import Upload from "./Upload/Upload";
 import Detail from "./Detail/Detail";
 import './main.css';
 import {getUsername} from './Backend/database';
@@ -12,7 +11,6 @@ import Autosuggest from 'react-autosuggest';
 import ReactTooltip from 'react-tooltip'
 
 import MdAccountCircle from 'react-icons/lib/md/account-circle';
-import MdFileUpload from 'react-icons/lib/md/file-upload';
 import MdMenu from 'react-icons/lib/md/menu';
 
 // Imagine you have a list of languages that you'd like to autosuggest.
@@ -123,9 +121,6 @@ class Main extends Component {
                     <NavLink to="/account">
                         <li className="hidden-menu-item">Account</li>
                     </NavLink>
-                    <NavLink to="/upload">
-                        <li className="hidden-menu-item">Upload</li>
-                    </NavLink>
                 </ul>
             </div>;
         }
@@ -149,11 +144,6 @@ class Main extends Component {
                             <NavLink to="/">
                                 <li data-tip="Creations" className='menu-icon'>
                                     <p className="menu-text">Home</p>
-                                </li>
-                            </NavLink>
-                            <NavLink to="/upload">
-                                <li data-tip="Upload" className='menu-icon'>
-                                    <MdFileUpload/>
                                 </li>
                             </NavLink>
                             <NavLink to="/account">
@@ -182,7 +172,6 @@ class Main extends Component {
                     <div className="content">
                         <Route exact path="/" component={Home}/>
                         <Route exact path="/account" component={Account}/>
-                        <Route exact path="/upload" component={Upload}/>
                         <Route path='/view/:String' component={Detail}/>
                     </div>
                 </div>

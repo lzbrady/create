@@ -1,194 +1,66 @@
 #upload-wrapper {
     background-color: #e5e5e5;
-    padding: 25px 5px;
-}
-
-#upload-file-wrapper,
-#upload-info-wrapper {
+    padding: 10px 0px;
     position: relative;
-    width: 80%;
-    background-color: #fff;
-    background-size: cover;
-    margin: auto;
-}
-
-#upload-file-wrapper {
-    text-align: center;
-    height: 325px;
-}
-
-#upload-info-left,
-#upload-info-right {
-    display: inline-block;
-    vertical-align: top;
-}
-
-#upload-info-left {
-    width: 39%;
-}
-
-#upload-info-right {
-    width: 59%;
-}
-
-.upload-info-thumbnail-container {
-    width: 90%;
-    background-color: black;
-    text-align: center;
-    margin: auto;
-    margin-top: 10px;
-    padding: 5px;
+    width: 100%;
+    height: 150px;
     box-sizing: border-box;
 }
 
-.upload-info-thumbnail {
-    width: 150px;
-    height: 150px;
-    background-color: #aaaaaa;
-    display: inline-block;
-}
-
-.upload-info-thumbnail:hover {
-    background-color: #707070;
-    cursor: pointer;
-}
-
-#upload-info-tags {
-    background-color: #e5e5e5;
-    width: 90%;
-    margin: 0px auto;
-    padding-bottom: 10px;
-}
-
-.tag-text {
-    display: inline-block;
-    margin: 0px;
-}
-
-.tag-x {
-    display: inline-block;
-    width: 13px;
-    height: 13px;
-    background-color: white;
-    padding: 2px;
-    text-align: center;
-    line-height: 12px;
-    margin: 2px 0px 2px 7px;
-    font-family: sans-serif;
-    font-size: 16px;
-}
-
-.tag-x:hover {
-    cursor: pointer;
-}
-
-.tag-input {
-    display: block;
-    margin: auto;
-    margin-top: 5px;
-}
-
-#tags-title {
-    margin: 10px 0px 0px 5%;
-}
-
-#input-container {
-    width: 30%;
-    height: 50vh;
-    display: inline-block;
-}
-
-#upload-container-small {
-    width: 31.5%;
-    background-color: black;
-    background-size: cover;
-    height: 50vh;
-    margin: auto;
-    text-align: center;
-    display: inline-block;
-    position: absolute;
-    right: 3%;
-    top: 0px;
-}
-
-.upload-info-label {
-    font-size: 18px;
-    margin: 9px 0px;
-    font-weight: bold;
-    margin-bottom: 0px;
-}
-
-.input {
-    border: none;
-    background-color: black;
-    color: white;
-    padding: 3px 6px;
-    margin: 5px;
+.post-text-input {
+    position: relative;
+    height: 100px;
     width: 100%;
+    margin: auto;
+    display: block;
+    box-sizing: border-box;
 }
 
-.input:focus {
+.post-button-container {
+    width: 100%;
+    margin: auto;
+}
+
+.post-button {
+    width: calc(100% - 38px);
+    height: 30px;
+    border: none;
+    border-radius: 8px;
+    margin: 2px 0px;
+    box-sizing: border-box;
+    font-size: 20px;
+    background-color: #642864;
+    color: #ffffff;
+}
+
+.post-button:hover {
+    cursor: pointer;
+    background-color: #512151;
+}
+
+.post-button:focus {
     outline: none;
 }
 
-#upload-info-input-title {
-    height: 23px;
-    width: 100%;
-    box-sizing: border-box;
-    font-size: 18px;
+.post-button-success {
+    background-color: #20c563 !important;
+    color: #245b3b !important;
 }
 
-#upload-info-input-description {
-    height: 110px;
-    font-size: 14px;
-    width: 100%;
-    box-sizing: border-box;
-    min-width: 100%;
-    max-width: 100%;
-    min-height: 110px;
+.post-button-error {
+    background-color: #e43a1e !important;
 }
 
-#upload-info-submit-button {
-    border: none;
-    padding: 6px 16px;
-    border-radius: 10px;
-    font-size: 20px;
-    margin-left: calc(50% - 37.25px);
+.post-icon {
+    height: 38px;
+    width: 38px;
+    margin-top: -7px;
+    color: #642864;
 }
 
-.disabled {
-    background-color: #785f78;
-    color: white;
-    cursor: not-allowed;
-}
-
-.enabled {
-    background-color: #8f008f;
-    color: white;
+.post-icon:hover {
     cursor: pointer;
-}
-
-#xxl-uploading {
-    display: none;
-    fill: #8f008f;
-    margin-top: 112.5px;
-}
-
-#xxl-uploaded {
-    display: none;
-    fill: #8f008f;
-    margin-top: 87.5px;
-}
-
-#xxl-upload {
-    fill: #8f008f;
-    margin-top: 62.5px;
-}
-
-#xxl-upload:hover {
-    -webkit-filter: drop-shadow(0px 0px 8px white);
-    filter: drop-shadow(0px 0px 8px white);
-    cursor: pointer;
+    color: #512151;
 }
 
 #media-capture,
