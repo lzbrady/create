@@ -166,13 +166,21 @@
 }
 
 .profile-tab {
-    background-color: orange;
+    background-color: #e9ebee;
     font-size: 2rem;
     display: inline-block;
     width: 30%;
     margin: 0px 1%;
+    border: 1px solid black;
     box-sizing: border-box;
     text-align: center;
+    border-bottom: none;
+    border-radius: 13px 13px 0px 0px;
+}
+
+.profile-tab:hover {
+    cursor: pointer;
+    background-color: #d7d9dd;
 }
 
 .profile-btn {
@@ -208,4 +216,11 @@
 .profile-link:hover {
     box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
     cursor: pointer;
+}
+
+#feed-wrapper {
+    border: 1px solid #642864;
+    max-height: 1200px;
+    overflow: scroll;
+    background-color: #e9ebee;
 }

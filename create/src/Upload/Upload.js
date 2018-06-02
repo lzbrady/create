@@ -57,15 +57,15 @@ class Upload extends Component {
     handlePost() {
         let postRequest = post(this.state.post, this.state.image);
         if (postRequest.success) {
-            this.setState({postSuccess: true, postError: false, errorMessage: ""});
+            this.setState({postSuccess: true, postError: false, postButtonMessage: "Success!"});
         } else if (postRequest.error) {
-            this.setState({postSuccess: false, postError: true, errorMessage: postRequest.error});
+            this.setState({postSuccess: false, postError: true, postButtonMessage: `Error: ${postRequest.error}`});
         } else {
             postRequest.then((result) => {
                 if (result.success) {
-                    this.setState({postSuccess: true, postError: false, errorMessage: ""});
+                    this.setState({postSuccess: true, postError: false, postButtonMessage: "Success!"});
                 } else if (result.error) {
-                    this.setState({postSuccess: false, postError: true, errorMessage: postRequest.error});
+                    this.setState({postSuccess: false, postError: true, postButtonMessage: `Error: ${postRequest.error}`});
                 }
             })
         }

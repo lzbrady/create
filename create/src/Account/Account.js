@@ -22,7 +22,7 @@ class Account extends Component {
             proPicUrl: "",
             skills: [],
             detailCreation: "",
-            showFeed: true,
+            showFeed: false,
             showReviews: false,
             showWorkedWith: false
         };
@@ -95,7 +95,7 @@ class Account extends Component {
             .click();
     }
 
-    uploadProfilePicture(selectorFiles : FileList) {
+    uploadProfilePicture(selectorFiles) {
         setProfilePicture(selectorFiles).then((url) => {
             this.setState({proPicUrl: url});
             window
@@ -104,9 +104,9 @@ class Account extends Component {
         });
     }
 
-    componentWillMount() {
+    componentDidMount() {
         getAccountInfo().then((snapshot) => {
-            this.setState({name: snapshot.name, proPicUrl: snapshot.proPicUrl, skills: snapshot.skills});
+            this.setState({name: snapshot.name, proPicUrl: snapshot.proPicUrl, skills: snapshot.skills, showFeed: true});
         });
     }
 
@@ -175,7 +175,7 @@ class Account extends Component {
                             onClick={() => this.setState({showFeed: false, showReviews: false, showWorkedWith: true})}>Collabs</p>
                     </div>
 
-                    {this.state.showFeed && <Feed/>}
+                    {this.state.showFeed && <Feed name={this.state.name} proPicUrl={this.state.proPicUrl}/>}
                     {this.state.showReviews && <Reviews/>}
                     {this.state.showWorkedWith && <Collabs/>}
                 </div>

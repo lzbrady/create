@@ -69,6 +69,119 @@ export function post(post, imageFile) {
     }
 }
 
+export function getPosts() {
+    return fire
+        .database()
+        .ref('posts')
+        .orderByChild('uid')
+        .equalTo('user2id')
+        .once('value')
+        .then((snapshot) => {
+            let posts = [];
+            snapshot.forEach((data) => {
+                let post = {
+                    post: data
+                        .val()
+                        .post,
+                    pid: data.key,
+                    timestamp: data
+                        .val()
+                        .timestamp
+                };
+                if (data.val().comments) {
+                    let comments = [];
+                    for (let comment in data.val().comments) {
+                        if (data.val().comments.hasOwnProperty(comment)) {
+                            comments.push(data.val().comments[comment]);
+                        }
+                    }
+                    post.comments = comments;
+                }
+                if (data.val().imageLocation) {
+                    post.image = data
+                        .val()
+                        .imageLocation;
+                }
+
+                posts.push(post);
+            });
+            return posts.reverse();
+        });
+}
+
+export function loadComments(pid) {
+    return fire
+        .database()
+        .ref('posts')
+        .child(pid)
+        .child('comments')
+        .once('value')
+        .then((snapshot) => {
+            if (snapshot !== null) {
+                let comments = [];
+                for (let comment in snapshot.val()) {
+                    if (snapshot.val().hasOwnProperty(comment)) {
+                        let commentObj = {
+                            content: snapshot.val()[comment],
+                            cid: comment
+                        };
+                        comments.push(commentObj);
+                    }
+                }
+                return getUsernames(comments);
+            } else {
+                return null;
+            }
+        });;
+}
+
+function getUsernames(comments) {
+    let newComments = [];
+    let promiseArray = [];
+
+    for (let i = 0; i < comments.length; i++) {
+        let newComment = {
+            comment: comments[i].content.comment,
+            cid: comments[i].cid
+        };
+        promiseArray.push(getUsername(comments[i].content.uid).then((username) => {
+            newComment.commentedBy = username;
+            newComments.push(newComment);
+        }));
+    }
+    return Promise
+        .all(promiseArray)
+        .then(() => {
+            return newComments.reverse();
+        })
+}
+
+function getUsername(uid) {
+    return fire
+        .database()
+        .ref('users')
+        .child(uid)
+        .child('name')
+        .once('value')
+        .then((snapshot) => {
+            return snapshot.val();
+        });
+}
+
+export function comment(pid, comment) {
+    return fire
+        .database()
+        .ref('posts')
+        .child(pid)
+        .child('comments')
+        .push()
+        .set({
+            comment: comment,
+            uid: "user1id",
+            timestamp: Date.now()
+        });
+}
+
 export function uploadMediaToDatabase(state) {
     //TODO: Remove hard coded username
     let newCreationRef = fire
@@ -269,6 +382,16 @@ export function getAccountInfo() {
     return promise;
 }
 
+export function loadImage(imageLocation) {
+    return fire
+        .storage()
+        .ref(imageLocation)
+        .getDownloadURL()
+        .then((url) => {
+            return url;
+        })
+}
+
 export function getAccountCreation(creationId) {
     let creationsRef = fire
         .database()
@@ -320,13 +443,13 @@ export function updateCreationInfo(fbk, state) {
         .update(state);
 }
 
-export function deleteCommentFromDatabase(fbk, commentId) {
+export function deleteCommentFromDatabase(post, comment) {
     fire
         .database()
-        .ref('creations')
-        .child(fbk)
+        .ref('posts')
+        .child(post.pid)
         .child('comments')
-        .child(commentId)
+        .child(comment.cid)
         .remove();
 }
 
