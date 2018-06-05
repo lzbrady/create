@@ -182,6 +182,21 @@ export function comment(pid, comment) {
         });
 }
 
+export function saveLink(type, link) {
+    let linkType = type
+        .toLowerCase()
+        .replace(' ', '');
+    return fire
+        .database()
+        .ref('users')
+        .child('user1id')
+        .child(linkType)
+        .set(link)
+        .catch((error) => {
+            return {error: "Invalid URL"};
+        });
+}
+
 export function uploadMediaToDatabase(state) {
     //TODO: Remove hard coded username
     let newCreationRef = fire
@@ -201,13 +216,7 @@ export function uploadMediaToDatabase(state) {
         [newCreationRef.key]: true
     });
     newCreationRef.update({owner: "user1id"});
-    // purgeFromPendingList("user1id");
 }
-
-// function purgeFromPendingList(username) {     fire         .database()
-// .ref('pending')         .child(username + "0")         .remove();     fire
-// .database()         .ref('pending')         .child(username + "1") .remove();
-// }
 
 export function pushToStorage(selectorFiles) {
     return fire
@@ -351,8 +360,7 @@ export function getAccountInfo() {
     let account = {
         name: "",
         proPicUrl: "",
-        skills: [],
-        creationIds: []
+        skills: []
     };
 
     let p = userRef.once('value');
@@ -360,7 +368,6 @@ export function getAccountInfo() {
     let promise = p.then((snapshot) => {
         let userInfo = snapshot.val();
         let newSkills = [];
-        let creationIds = [];
 
         for (let key in userInfo.skills) {
             if (userInfo.skills.hasOwnProperty(key)) {
@@ -368,14 +375,29 @@ export function getAccountInfo() {
             }
         }
 
-        for (let creation in userInfo.creations) {
-            creationIds.push(creation);
+        let acceptedServices = [
+            "applemusic",
+            "facebook",
+            "soundcloud",
+            "spotify",
+            "twitter",
+            "website",
+            "youtube"
+        ];
+        let links = [];
+        for (let child in userInfo) {
+            if (acceptedServices.includes(child)) {
+                let linkObject = {
+                    [child]: userInfo[child]
+                };
+                links.push(linkObject);
+            }
         }
 
         account.name = userInfo.name;
         account.proPicUrl = userInfo.proPicUrl;
         account.skills = newSkills;
-        account.creationIds = creationIds;
+        account.links = links;
 
         return account;
     });

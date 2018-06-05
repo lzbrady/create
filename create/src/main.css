@@ -132,3 +132,32 @@ body {
     font-size: 20px;
     margin-bottom: 10px;
 }
+
+.save-button {
+    background-color: #49b25c;
+    color: #164316;
+}
+
+.save-button:hover {
+    background-color: #419f50;
+    cursor: pointer;
+}
+
+.save-button:focus,
+.cancel-button:focus {
+    outline: none;
+}
+
+.cancel-button {
+    background-color: #fa4f3c;
+    color: #7f0000;
+}
+
+.cancel-button:hover {
+    background-color: #ec493a;
+    cursor: pointer;
+}
+
+.error-message {
+    color: #ff2525;
+}

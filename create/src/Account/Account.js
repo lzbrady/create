@@ -21,10 +21,10 @@ class Account extends Component {
             name: "",
             proPicUrl: "",
             skills: [],
-            detailCreation: "",
             showFeed: false,
             showReviews: false,
-            showWorkedWith: false
+            showWorkedWith: false,
+            links: []
         };
 
         this.newSkill = this
@@ -106,7 +106,7 @@ class Account extends Component {
 
     componentDidMount() {
         getAccountInfo().then((snapshot) => {
-            this.setState({name: snapshot.name, proPicUrl: snapshot.proPicUrl, skills: snapshot.skills, showFeed: true});
+            this.setState({links: snapshot.links, name: snapshot.name, proPicUrl: snapshot.proPicUrl, skills: snapshot.skills, showFeed: true});
         });
     }
 
@@ -161,7 +161,7 @@ class Account extends Component {
                         <Upload/>
                     </div>
 
-                    <ProfileLinks/>
+                    <ProfileLinks links={this.state.links}/>
 
                     <div className="profile-tabs">
                         <p

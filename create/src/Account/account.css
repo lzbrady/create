@@ -32,7 +32,7 @@
 }
 
 #profile-name {
-    font-size: 2rem;
+    font-size: 1.5rem;
     background-color: transparent;
     margin: 10px 0px;
     width: calc(100% - 24px);
@@ -91,7 +91,7 @@
 #skill-list {
     list-style: none;
     padding: 0px;
-    background-color: lightgray;
+    background-color: #e9ebee;
     margin: 5px;
 }
 
@@ -101,8 +101,24 @@
 .tag {
     display: inline-block;
     margin: 5px;
-    background: gray;
+    background: white;
     padding: 0px 5px;
+    padding-right: 0px;
+    border-radius: 9px;
+}
+
+.tag-x {
+    display: inline-block;
+    margin-left: 5px;
+    background-color: red;
+    padding: 0px 5px;
+    color: white;
+    border-radius: 9px;
+}
+
+.tag-x:hover {
+    background-color: rgb(220, 0, 0);
+    cursor: pointer;
 }
 
 .account-heading {
@@ -160,7 +176,6 @@
 
 .profile-tabs {
     width: 100%;
-    background-color: cadetblue;
     margin: 0px;
     text-align: center;
 }
@@ -196,13 +211,18 @@
 
 .profile-links-container {
     text-align: center;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    height: 120px;
+    padding: 20px;
+    white-space: nowrap;
+    margin-bottom: 10px;
 }
 
 .profile-link {
     width: 100px;
     height: 100px;
     background-color: #ffffff;
-    -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
     -webkit-transition: 0.3s;
     -o-transition: 0.3s;
@@ -223,4 +243,74 @@
     max-height: 1200px;
     overflow: scroll;
     background-color: #e9ebee;
+}
+
+.add-link-container {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    background-color: #000000e0;
+    color: white;
+    width: 100%;
+    height: 100vh;
+    z-index: 100;
+    text-align: center;
+}
+
+.add-link-wrapper {
+    width: 80%;
+    margin: auto;
+    background-color: #ffffff;
+    max-width: 500px;
+    border-radius: 25px;
+    height: 225px;
+    padding: 20px;
+    box-sizing: border-box;
+    vertical-align: middle;
+    margin-top: 10%;
+    position: relative;
+}
+
+.add-link-heading {
+    font-size: 24px;
+    color: #642864;
+}
+
+.add-link-input {
+    width: 80%;
+    padding: 5px;
+    border-radius: 13px;
+    border: none;
+    margin-top: 7px;
+    box-shadow: 0px 0px 3px #642864;
+}
+
+.add-link-input:focus {
+    outline: none;
+    box-shadow: 0px 0px 6px #642864;
+}
+
+.add-link-button-wrapper {
+    width: calc(80% - 40px);
+    vertical-align: bottom;
+    height: 30px;
+    position: absolute;
+    bottom: 20px;
+    left: calc(10% + 20px);
+}
+
+.add-link-button {
+    height: 35px;
+    width: 40%;
+    border: none;
+    border-radius: 8px;
+    font-size: 20px;
+}
+
+.save-add-link-button {
+    float: left;
+}
+
+.cancel-add-link-button {
+    float: right;
 }
