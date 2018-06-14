@@ -238,7 +238,13 @@
     cursor: pointer;
 }
 
-#feed-wrapper {
+.inactive-profile-link {
+    opacity: 0.6;
+    background-color: #e5e5e5;
+    filter: grayscale(100);
+}
+
+.feed-wrapper {
     border: 1px solid #642864;
     max-height: 1200px;
     overflow: scroll;

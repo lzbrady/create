@@ -17,15 +17,13 @@ class Feed extends Component {
 
     componentDidMount() {
         getPosts().then((posts) => {
-            console.log("Posts:", posts);
             this.setState({posts: posts});
         });
-        console.log(this.props.proPicUrl);
     }
 
     render() {
         return (
-            <div id="feed-wrapper">
+            <div className="feed-wrapper">
                 <div className="profile-tab-container">
                     <ul className="post-list">
                         {this

@@ -48,7 +48,6 @@ class Post extends Component {
 
         if (this.props.post.image) {
             loadImage(this.props.post.image).then((url) => {
-                console.log("Url", url);
                 this.setState({imageUrl: url});
             })
         }
@@ -166,7 +165,7 @@ class Post extends Component {
                         <img
                             className="post-profile-picture"
                             src={this.props.proPicUrl}
-                            alt="Profile Picture"/>
+                            alt="Profile Pic"/>
                         <div className="post-name-and-date">
                             <p className="posted-by">{this.props.name}</p>
                             <p className="posted-date">{this.state.postedAt}</p>

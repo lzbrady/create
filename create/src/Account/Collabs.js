@@ -13,7 +13,7 @@ class Collabs extends Component {
     render() {
         return (
             <div id="collabs-wrapper">
-                Collabs
+                Coming Soon, see past work!
             </div>
         );
     }

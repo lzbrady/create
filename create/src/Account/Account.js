@@ -1,5 +1,5 @@
-import React, {Component} from 'react';
-import {NavLink} from "react-router-dom";
+import React, { Component } from 'react';
+import { NavLink } from "react-router-dom";
 import Upload from '../Upload/Upload';
 
 import './account.css';
@@ -12,7 +12,7 @@ import Feed from './Feed';
 import Reviews from './Reviews';
 import Collabs from './Collabs';
 
-import {getAccountInfo, updateAccountInfo, setProfilePicture} from '../Backend/database';
+import { getAccountInfo, updateAccountInfo, setProfilePicture } from '../Backend/database';
 
 class Account extends Component {
     constructor(props) {
@@ -24,7 +24,6 @@ class Account extends Component {
             showFeed: false,
             showReviews: false,
             showWorkedWith: false,
-            links: []
         };
 
         this.newSkill = this
@@ -54,7 +53,7 @@ class Account extends Component {
                 if (!contains) {
                     let newStateSkills = this.state.skills;
                     newStateSkills.push(skill.trim());
-                    this.setState({skills: newStateSkills});
+                    this.setState({ skills: newStateSkills });
                     let accountObj = {
                         skills: newStateSkills
                     }
@@ -77,12 +76,12 @@ class Account extends Component {
                 }
                 updateAccountInfo(accountObj);
             }
-            this.setState({skills: newStateSkills});
+            this.setState({ skills: newStateSkills });
         }
     }
 
     handleChange(event) {
-        this.setState({name: event.target.value});
+        this.setState({ name: event.target.value });
         let accountObj = {
             name: event.target.value
         }
@@ -97,7 +96,7 @@ class Account extends Component {
 
     uploadProfilePicture(selectorFiles) {
         setProfilePicture(selectorFiles).then((url) => {
-            this.setState({proPicUrl: url});
+            this.setState({ proPicUrl: url });
             window
                 .location
                 .reload();
@@ -106,7 +105,7 @@ class Account extends Component {
 
     componentDidMount() {
         getAccountInfo().then((snapshot) => {
-            this.setState({links: snapshot.links, name: snapshot.name, proPicUrl: snapshot.proPicUrl, skills: snapshot.skills, showFeed: true});
+            this.setState({ name: snapshot.name, proPicUrl: snapshot.proPicUrl, skills: snapshot.skills, showFeed: true });
         });
     }
 
@@ -119,21 +118,21 @@ class Account extends Component {
                             className="profile-info"
                             id="profile-picture"
                             src={this.state.proPicUrl}
-                            alt="Profile Pic"/>
-                        <MdCameraAlt className="profile-picture-camera-icon"/>
+                            alt="Profile Pic" />
+                        <MdCameraAlt className="profile-picture-camera-icon" />
                         <input
                             id="profile-picture-capture"
                             type="file"
-                            onChange={(e) => this.uploadProfilePicture(e.target.files[0])}/>
+                            onChange={(e) => this.uploadProfilePicture(e.target.files[0])} />
                     </div>
 
                     <div className="profile-name-container">
-                        <FaPencil className="edit-icon"/>
+                        <FaPencil className="edit-icon" />
                         <input
                             className="profile-info"
                             id="profile-name"
                             value={this.state.name}
-                            onChange={this.handleChange}/>
+                            onChange={this.handleChange} />
                     </div>
 
                     <p className="profile-info account-heading" id="profile-skills-heading">Creates:</p>
@@ -143,7 +142,7 @@ class Account extends Component {
                             .skills
                             .map((skill) => {
                                 return <li className="skill" key={skill}>{skill}
-                                    <div className="tag-x" onClick={e => this.removeSkill({skill})}>
+                                    <div className="tag-x" onClick={e => this.removeSkill({ skill })}>
                                         x
                                     </div>
                                 </li>;
@@ -153,31 +152,31 @@ class Account extends Component {
                         type="text"
                         className="skill-input"
                         placeholder="Add Skill! (Hit Enter)"
-                        onKeyPress={this.newSkill}/>
+                        onKeyPress={this.newSkill} />
                 </div>
 
                 <div id="content-info-div" className="info-div">
                     <div className="profile-btn-div">
-                        <Upload/>
+                        <Upload />
                     </div>
 
-                    <ProfileLinks links={this.state.links}/>
+                    <ProfileLinks />
 
                     <div className="profile-tabs">
                         <p
                             className="profile-tab"
-                            onClick={() => this.setState({showFeed: true, showReviews: false, showWorkedWith: false})}>Feed</p>
+                            onClick={() => this.setState({ showFeed: true, showReviews: false, showWorkedWith: false })}>Feed</p>
                         <p
                             className="profile-tab"
-                            onClick={() => this.setState({showFeed: false, showReviews: true, showWorkedWith: false})}>Reviews</p>
+                            onClick={() => this.setState({ showFeed: false, showReviews: true, showWorkedWith: false })}>Reviews</p>
                         <p
                             className="profile-tab"
-                            onClick={() => this.setState({showFeed: false, showReviews: false, showWorkedWith: true})}>Collabs</p>
+                            onClick={() => this.setState({ showFeed: false, showReviews: false, showWorkedWith: true })}>Collabs</p>
                     </div>
 
-                    {this.state.showFeed && <Feed name={this.state.name} proPicUrl={this.state.proPicUrl}/>}
-                    {this.state.showReviews && <Reviews/>}
-                    {this.state.showWorkedWith && <Collabs/>}
+                    {this.state.showFeed && <Feed name={this.state.name} proPicUrl={this.state.proPicUrl} />}
+                    {this.state.showReviews && <Reviews />}
+                    {this.state.showWorkedWith && <Collabs />}
                 </div>
             </div>
         );

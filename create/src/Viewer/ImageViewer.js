@@ -25,7 +25,7 @@ class ImageViewer extends Component {
         return (
             <div id="detail-image-wrapper">
                 {/*TODO: Fix weird gap at bottom*/}
-                <a target="_blank" href={this.state.imageUrl}><img id="detail-image" src={this.state.imageUrl} alt="Error loading image"/></a>
+                <a target="_blank" href={this.state.imageUrl}><img id="detail-image" src={this.state.imageUrl} alt="Error loading"/></a>
                 {/* <img id="detail-image" src={this.state.imageUrl} alt="Error loading image"/>             */}
             </div>
         );

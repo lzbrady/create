@@ -1,7 +1,7 @@
 import fire from '../fire';
 
 const defaultProfilePictureUrl = "https://firebasestorage.googleapis.com/v0/b/creators-inc.appspot.com/o/default-p" +
-        "rofile-picture.png?alt=media&token=60c3fc4c-5ab9-4b8c-b168-4dfc3b233a56";
+    "rofile-picture.png?alt=media&token=60c3fc4c-5ab9-4b8c-b168-4dfc3b233a56";
 
 export function getAllCreations() {
     let creationsRef = fire
@@ -25,7 +25,7 @@ export function getAllCreations() {
 
 export function post(post, imageFile) {
     if (imageFile.type && !imageFile.type.includes("image")) {
-        return {error: "We currently only support posting text and images"};
+        return { error: "We currently only support posting text and images" };
     }
     if (imageFile.type) {
         return pushToStorage(imageFile).then((snapshot) => {
@@ -45,7 +45,7 @@ export function post(post, imageFile) {
                 .child("posts")
                 .child(pid.key)
                 .set(true);
-            return {success: true};
+            return { success: true };
         });
     } else {
         let pid = fire
@@ -64,7 +64,7 @@ export function post(post, imageFile) {
             .child("posts")
             .child(pid.key)
             .set(true);
-        return {success: true};
+        return { success: true };
 
     }
 }
@@ -144,7 +144,7 @@ function getUsernames(comments) {
             comment: comments[i].content.comment,
             cid: comments[i].cid
         };
-        promiseArray.push(getUsername(comments[i].content.uid).then((username) => {
+        promiseArray.push(getUsernameFromId(comments[i].content.uid).then((username) => {
             newComment.commentedBy = username;
             newComments.push(newComment);
         }));
@@ -156,12 +156,24 @@ function getUsernames(comments) {
         })
 }
 
-function getUsername(uid) {
+function getUsernameFromId(uid) {
     return fire
         .database()
         .ref('users')
         .child(uid)
         .child('name')
+        .once('value')
+        .then((snapshot) => {
+            return snapshot.val();
+        });
+}
+
+function getProPicFromId(uid) {
+    return fire
+        .database()
+        .ref('users')
+        .child(uid)
+        .child('proPicUrl')
         .once('value')
         .then((snapshot) => {
             return snapshot.val();
@@ -183,6 +195,26 @@ export function comment(pid, comment) {
 }
 
 export function saveLink(type, link) {
+    if (link === "") {
+        return removeLink(type);
+    } else {
+        let linkType = type
+            .toLowerCase()
+            .replace(' ', '');
+        return fire
+            .database()
+            .ref('users')
+            .child('user1id')
+            .child('services')
+            .child(linkType)
+            .set(link)
+            .catch((error) => {
+                return { error: "Invalid URL. Make sure spelling is correct and link matches service." };
+            });
+    }
+}
+
+function removeLink(type) {
     let linkType = type
         .toLowerCase()
         .replace(' ', '');
@@ -190,11 +222,73 @@ export function saveLink(type, link) {
         .database()
         .ref('users')
         .child('user1id')
+        .child('services')
         .child(linkType)
-        .set(link)
-        .catch((error) => {
-            return {error: "Invalid URL"};
+        .remove();
+}
+
+export function getLinks() {
+    return fire
+        .database()
+        .ref('users')
+        .child('user1id')
+        .child('services')
+        .once('value').then((snapshot) => {
+            return snapshot.val();
         });
+}
+
+export function getReviews() {
+    return fire
+        .database()
+        .ref('reviews')
+        .orderByChild('revieweeid')
+        .equalTo('user1id')
+        .once('value')
+        .then((snapshot) => {
+            let reviews = [];
+            let promiseArr = [];
+            snapshot.forEach((data) => {
+                let review = {
+                    review: data.val().review,
+                    stars: data.val().stars,
+                    timestamp: data.val().timestamp
+                };
+                promiseArr.push(getReviewInfo(data.val().revieweeid, data.val().reviewerid).then((usernames) => {
+                    review.revieweeUsername = usernames.revieweeUsername;
+                    review.reviewerUsername = usernames.reviewerUsername;
+                    review.revieweeProPicUrl = usernames.revieweeProPicUrl;
+                    review.reviewerProPicUrl = usernames.reviewerProPicUrl;
+                }));
+
+                reviews.push(review);
+            });
+            return Promise
+                .all(promiseArr)
+                .then(() => {
+                    return reviews.reverse();
+                })
+        });
+}
+
+function getReviewInfo(revieweeid, reviewerid) {
+    let userInfo = {};
+    // Username
+    return getUsernameFromId(revieweeid).then((revieweeUsername) => {
+        userInfo.revieweeUsername = revieweeUsername;
+        // Username
+        return getUsernameFromId(reviewerid).then((reviewerUsername) => {
+            userInfo.reviewerUsername = reviewerUsername;
+            // Pro Pic
+            return getProPicFromId(revieweeid).then((revieweeProPic) => {
+                userInfo.revieweeProPicUrl = revieweeProPic;
+                return getProPicFromId(reviewerid).then((reviewerProPic) => {
+                    userInfo.reviewerProPicUrl = reviewerProPic;
+                    return userInfo;
+                });
+            });
+        });
+    });
 }
 
 export function uploadMediaToDatabase(state) {
@@ -215,7 +309,7 @@ export function uploadMediaToDatabase(state) {
     userCreationsRef.update({
         [newCreationRef.key]: true
     });
-    newCreationRef.update({owner: "user1id"});
+    newCreationRef.update({ owner: "user1id" });
 }
 
 export function pushToStorage(selectorFiles) {
@@ -255,10 +349,10 @@ export function pushCommentToCreation(comment, fbk) {
         .ref('creations')
         .child(fbk)
         .child("comments")
-        .update({[commentKey]: comment});
+        .update({ [commentKey]: comment });
 }
 
-//TODO remove hard coded key
+// //TODO remove hard coded key
 export function getUsername() {
     let userRef = fire
         .database()
@@ -505,7 +599,7 @@ export function setProfilePicture(selectorFiles) {
         let promise = mediaRef
             .getDownloadURL()
             .then(function (url) {
-                updateAccountInfo({proPicUrl: url});
+                updateAccountInfo({ proPicUrl: url });
                 return url;
             })
             .catch(function (error) {

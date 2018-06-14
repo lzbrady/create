@@ -8,7 +8,7 @@ import './main.css';
 import {getUsername} from './Backend/database';
 
 import Autosuggest from 'react-autosuggest';
-import ReactTooltip from 'react-tooltip'
+import ReactTooltip from 'react-tooltip';
 
 import MdAccountCircle from 'react-icons/lib/md/account-circle';
 import MdMenu from 'react-icons/lib/md/menu';

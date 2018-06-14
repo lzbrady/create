@@ -1,4 +1,6 @@
-import React, {Component} from "react";
+import React, {
+    Component
+} from "react";
 
 import Applemusic from '../images/logos/applemusic-logo.png';
 import Facebook from '../images/logos/facebook-logo.png';
@@ -10,7 +12,8 @@ import Youtube from '../images/logos/youtube-logo.png';
 
 import AddLink from './AddLink';
 
-import {saveLink} from '../Backend/database';
+import { saveLink, getLinks } from '../Backend/database';
+import ReactTooltip from 'react-tooltip';
 
 class ProfileLinks extends Component {
 
@@ -22,7 +25,14 @@ class ProfileLinks extends Component {
             addingLink: false,
             linkType: "",
             link: "",
-            error: ""
+            error: "",
+            applemusic: "wawawa",
+            facebook: "",
+            soundcloud: "",
+            spotify: "",
+            twitter: "",
+            website: "",
+            youtube: ""
         }
 
         this.showLinkDialog = this
@@ -42,89 +52,100 @@ class ProfileLinks extends Component {
             .bind(this);
     }
 
+    componentDidMount() {
+        getLinks().then((links) => {
+            for (let i in links) {
+                this.setState({ [i]: links[i] });
+            }
+        });
+    }
+
     showLinkDialog(linkType) {
-        this
-            .props
-            .links
-            .forEach((linkObj) => {
-                let service = linkType
-                    .toLowerCase()
-                    .replace(' ', '');
-                if (service in linkObj) {
-                    this.setState({link: linkObj[service]});
-                }
-            });
-        this.setState({linkType: linkType, addingLink: true});
+        let service = linkType.toLowerCase().replace(' ', '');
+        if (this.state[service] !== "") {
+            this.setState({ link: this.state[service] });
+        }
+        this.setState({
+            linkType: linkType,
+            addingLink: true
+        });
     }
 
     cancel() {
-        this.setState({addingLink: false, link: "", error: ""});
+        this.setState({
+            addingLink: false,
+            link: "",
+            error: ""
+        });
     }
 
     confirm() {
         saveLink(this.state.linkType, this.state.link).then((error) => {
             if (error) {
-                console.log("Error", error.error);
-                this.setState({error: error.error});
+                this.setState({
+                    error: error.error
+                });
             } else {
-                this.setState({addingLink: false, link: ""});
+                let newLinkType = this.state.linkType
+                    .toLowerCase()
+                    .replace(' ', '');
+                this.setState({
+                    addingLink: false,
+                    link: "",
+                    [newLinkType]: this.state.link
+                });
             }
         });
     }
 
     updateLink(event) {
-        this.setState({link: event.target.value});
+        this.setState({
+            link: event.target.value
+        });
     }
 
     render() {
-        return (
-            <div id="profile-links-wrapper">
-                <div className="profile-links-container">
-                    <img
-                        onClick={() => this.showLinkDialog('Apple Music')}
-                        src={Applemusic}
-                        alt="Apple Music"
-                        className="profile-link"/>
-                    <img
-                        onClick={() => this.showLinkDialog('Facebook')}
-                        src={Facebook}
-                        alt="Facebook"
-                        className="profile-link"/>
-                    <img
-                        onClick={() => this.showLinkDialog('SoundCloud')}
-                        src={Soundcloud}
-                        alt="SoundCloud"
-                        className="profile-link"/>
-                    <img
-                        onClick={() => this.showLinkDialog('Spotify')}
-                        src={Spotify}
-                        alt="Spotify"
-                        className="profile-link"/>
-                    <img
-                        onClick={() => this.showLinkDialog('Twitter')}
-                        src={Twitter}
-                        alt="Twitter"
-                        className="profile-link"/>
-                    <img
-                        onClick={() => this.showLinkDialog('Website')}
-                        src={Website}
-                        alt="Website"
-                        className="profile-link"/>
-                    <img
-                        onClick={() => this.showLinkDialog('YouTube')}
-                        src={Youtube}
-                        alt="YouTube"
-                        className="profile-link"/>
-                </div>
-
-                {this.state.addingLink && <AddLink
-                    title={this.state.linkType}
-                    confirm={this.confirm}
-                    cancel={this.cancel}
-                    link={this.state.link}
-                    updateLink={this.updateLink}
-                    error={this.state.error}/>}
+        return (<div id="profile-links-wrapper" >
+            <div className="profile-links-container" >
+                <img onClick={() => this.showLinkDialog('Apple Music')}
+                    src={Applemusic}
+                    alt="Apple Music"
+                    className={this.state.applemusic === "" ? "inactive-profile-link profile-link" : "profile-link"} />
+                <img onClick={() => this.showLinkDialog('Facebook')}
+                    src={Facebook}
+                    alt="Facebook"
+                    className={this.state.facebook === "" ? "inactive-profile-link profile-link" : "profile-link"} />
+                <img onClick={() => this.showLinkDialog('SoundCloud')}
+                    src={Soundcloud}
+                    alt="SoundCloud"
+                    className={this.state.soundcloud === "" ? "inactive-profile-link profile-link" : "profile-link"} />
+                <img onClick={() => this.showLinkDialog('Spotify')}
+                    src={Spotify}
+                    alt="Spotify"
+                    className={this.state.spotify === "" ? "inactive-profile-link profile-link" : "profile-link"} />
+                <img onClick={() => this.showLinkDialog('Twitter')}
+                    src={Twitter}
+                    alt="Twitter"
+                    className={this.state.twitter === "" ? "inactive-profile-link profile-link" : "profile-link"} />
+                <img onClick={() => this.showLinkDialog('Website')}
+                    src={Website
+                    } alt="Website"
+                    className={this.state.website === "" ? "inactive-profile-link profile-link" : "profile-link"} />
+                <img onClick={() => this.showLinkDialog('YouTube')}
+                    src={Youtube}
+                    alt="YouTube"
+                    className={this.state.youtube === "" ? "inactive-profile-link profile-link" : "profile-link"} />
             </div>
+
+            {this.state.addingLink && < AddLink
+                title={this.state.linkType}
+                confirm={this.confirm}
+                cancel={this.cancel}
+                link={this.state.link}
+                updateLink={this.updateLink}
+                error={this.state.error}
+            />}
+        </div>
         );
     }
 }

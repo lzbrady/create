@@ -1,0 +1,34 @@
+.review-account-info {
+    width: 100%;
+}
+
+.review-name-and-stars {
+    display: inline-block;
+}
+
+.review-star-number {
+    margin: -8px 3px 0px 6px;
+    font-size: 24px;
+    font-weight: bold;
+    display: inline-block;
+    min-width: 35px;
+    text-align: center;
+}
+
+.review-content {
+    background-color: #e9ebee;
+    padding: 4px;
+    font-size: 22px;
+    margin: 5px;
+    box-sizing: border-box;
+}
+
+.review-date {
+    border-bottom: 1px solid purple;
+    padding-bottom: 5px;
+    width: 96%;
+    margin: 8px auto 10px;
+    font-size: 12px;
+    padding-left: 5px;
+    box-sizing: border-box;
+}

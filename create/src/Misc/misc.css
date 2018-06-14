@@ -1,0 +1,41 @@
+.star-container {
+    display: inline-block;
+}
+
+.star-wrapper {
+    display: inline-block;
+    position: relative;
+    width: 30px;
+    height: 20px;
+}
+
+.full-star,
+.empty-star,
+.half-star {
+    margin: -8px 0px 0px 3px;
+    font-size: 28px;
+    text-shadow: 0px 0px 2px black;
+    display: inline-block;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
+
+.full-star {
+    color: gold;
+    z-index: 10;
+    width: 24px;
+}
+
+.empty-star {
+    color: black;
+    z-index: 10;
+    width: 24px;
+}
+
+.half-star {
+    color: gold;
+    z-index: 100;
+    width: 12px;
+    overflow: hidden;
+}

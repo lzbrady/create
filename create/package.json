@@ -17,6 +17,7 @@
     "react-player": "^1.6.2",
     "react-router-dom": "^4.2.2",
     "react-scripts": "1.0.17",
+    "react-tooltip": "^3.6.1",
     "s3-nodejs-sample": "^1.0.9"
   },
   "scripts": {
